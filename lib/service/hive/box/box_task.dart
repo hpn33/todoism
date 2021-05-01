@@ -7,4 +7,12 @@ class BoxTasks extends BoxWrapper<Task> {
 
   @override
   Future<void> initBox(Box<Task> box) async {}
+
+  Future<int> create(String title, String description) {
+    return box.add(
+      Task()
+        ..title = title
+        ..description = description,
+    );
+  }
 }

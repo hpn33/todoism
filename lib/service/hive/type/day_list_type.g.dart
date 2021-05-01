@@ -1,37 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task_type.dart';
+part of 'day_list_type.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TaskAdapter extends TypeAdapter<Task> {
+class DayListAdapter extends TypeAdapter<DayList> {
   @override
-  final int typeId = 3;
+  final int typeId = 4;
 
   @override
-  Task read(BinaryReader reader) {
+  DayList read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Task()
-      ..title = fields[0] as String
-      ..description = fields[1] as String
-      ..state = fields[2] as bool?;
+    return DayList()..date = fields[0] as DateTime;
   }
 
   @override
-  void write(BinaryWriter writer, Task obj) {
+  void write(BinaryWriter writer, DayList obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.description)
-      ..writeByte(2)
-      ..write(obj.state);
+      ..writeByte(0)
+      ..write(obj.date);
   }
 
   @override
@@ -40,7 +33,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaskAdapter &&
+      other is DayListAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

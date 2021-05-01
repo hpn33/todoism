@@ -12,5 +12,5 @@ class Task extends HiveObject {
   late String description;
 
   @HiveField(2)
-  late DateTime dayDate;
+  bool? state;
 }
