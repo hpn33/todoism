@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-void main() {
+import 'service/hive/hive_wrapper.dart';
+
+Future<void> main() async {
+  await hiveW.loadHive();
+
   runApp(MyApp());
 }
 

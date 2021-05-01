@@ -76,24 +76,48 @@ task table
 id
 title
 descript
-create_at
-update_at
+day_date
 
-todo list table
+<!-- day list table
 ساخت لیست برای کارهای روز
 id
 title
 list
 create_at
-update_at
+update_at -->
 
 
-task todo table
+<!-- task todo relation table
 برای ارتباط کارها با لیست
 id
 list_id
+task_id -->
+
+
+tag table
+برای موضوع بندی کارها
+id
+tag_parent_id
+title
+descript
+
+
+task tag relation table
+ارتباط کار و تگ
+id
 task_id
+tag_id
+
+
+کار ها به طور کلی ساخته میشوند
+اگر کار در روز مورد نظر ساخته شود در لیست روز قرار میگیرد
+میتوان کار ها را با استفاده از برچسب ها مدیریت کرد
 
 
 
+نمایش کارها
 
+نمایش تمام کارها
+نمایش کارها در روز
+نمایش کارها در روز و برچسب
+نمایش کارها بر اساس برچسب
