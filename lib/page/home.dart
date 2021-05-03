@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:todoism/service/hive/hive_wrapper.dart';
+import 'package:todoism/page/total_view.dart';
 import 'package:todoism/widget/main_frame.dart';
 
 import 'component/add_task_form.dart';
-import 'component/total_task_list.dart';
+import 'day_view.dart';
+import 'tag_view.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -14,12 +15,7 @@ class Home extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: Column(
-              children: [
-                TabView(),
-                TotalTaskList(),
-              ],
-            ),
+            child: TabView(),
           ),
           SizedBox(width: 10),
           Expanded(
@@ -39,19 +35,32 @@ class Home extends StatelessWidget {
 }
 
 class TabView extends HookWidget {
+  final titles = const ['total', 'days', 'tags'];
+
   @override
   Widget build(BuildContext context) {
-    final tabController = useTabController(initialLength: 3);
+    final tabController = useTabController(initialLength: titles.length);
 
-    return TabBar(
-      controller: tabController,
-      tabs: List.generate(
-        tabController.length,
-        (index) => Text(
-          '$index',
-          style: TextStyle(color: Colors.black),
+    return Column(
+      children: [
+        TabBar(
+          controller: tabController,
+          tabs: titles
+              .map((e) =>
+                  Tab(child: Text(e, style: TextStyle(color: Colors.black))))
+              .toList(),
         ),
-      ),
+        Expanded(
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              TotalView(),
+              DayView(),
+              TagView(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

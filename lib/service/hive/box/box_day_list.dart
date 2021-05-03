@@ -8,16 +8,31 @@ class BoxDayLists extends BoxWrapper<DayList> {
   @override
   Future<void> initBox(Box<DayList> box) async {}
 
-  Future<int> getOrCreate(DateTime dateTime) async {
+  Iterable<DayList> onDate(DateTime dateTime) {
     // remove clock just keep date
     final fixedDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
 
-    final list = box.values.where((element) => element.date == fixedDate);
+    return where((element) => element.date == fixedDate);
+  }
+
+  Future<int> getOrCreate(DateTime dateTime) async {
+    final fixedDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+    final list = onDate(dateTime);
 
     if (list.isNotEmpty) {
       return list.first.key;
     }
 
     return box.add(DayList()..date = fixedDate);
+  }
+
+  DayList? ofDay(DateTime dateTime) {
+    final dayLists = onDate(dateTime);
+
+    if (dayLists.isEmpty) {
+      return null;
+    }
+
+    return dayLists.first;
   }
 }
