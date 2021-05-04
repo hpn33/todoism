@@ -44,7 +44,10 @@ class HiveWrapper extends HostHiveWrapper {
     Hive.registerAdapter(TaskTagRelAdapter());
     Hive.registerAdapter(TaskDayListRelAdapter());
 
-    boxs.forEach((key, value) async => await value.load());
+    for (final box in boxs.values) {
+      await box.load();
+    }
+    // boxs.forEach((key, value) async => await value.load());
   }
 
   Future<void> addTask(String title, String description) async {
