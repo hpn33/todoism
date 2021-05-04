@@ -12,7 +12,8 @@ class BoxTasks extends BoxWrapper<Task> {
     return box.add(
       Task()
         ..title = title
-        ..description = description,
+        ..description = description
+        ..state = false,
     );
   }
 }

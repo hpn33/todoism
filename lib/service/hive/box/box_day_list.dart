@@ -35,4 +35,8 @@ class BoxDayLists extends BoxWrapper<DayList> {
 
     return dayLists.first;
   }
+
+  Iterable<DayList> sorted() {
+    return (all.toList()..sort((a, b) => b.date.compareTo(a.date)));
+  }
 }
