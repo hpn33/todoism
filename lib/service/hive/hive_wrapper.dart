@@ -15,7 +15,7 @@ import 'type/task_tag_rel_type.dart';
 
 final hiveW = HiveWrapper();
 
-class HiveWrapper {
+class HiveWrapper extends HostHiveWrapper {
   final boxs = <String, BoxWrapper>{
     'tasks': BoxTasks(),
     'day_lists': BoxDayLists(),
@@ -56,25 +56,47 @@ class HiveWrapper {
   }
 }
 
-class HiveObjectDub extends HiveObject {
+abstract class HostHiveWrapper {
+  late Map<String, BoxWrapper> boxs;
+
+  BoxWrapper<BoxType> getBox<BoxType>(String boxName);
+}
+
+class HiveObjectWrapper extends HiveObject {
   getField(String name) {}
 
-  Iterable<ReturnType> hasMany<ReturnType extends HiveObjectDub>(
-    String boxName,
-    String field,
-  ) {
-    return hiveW
-        .getBox<ReturnType>(boxName)
-        .where((element) => element.getField(field) == key);
+  Iterable<ReturnType> hasMany<ReturnType extends HiveObjectWrapper>(
+    String boxName, {
+    String? targetField,
+    int? localKey,
+  }) {
+    localKey = localKey ?? key;
+
+    final box = hiveW.getBox<ReturnType>(boxName);
+
+    return box.where((element) {
+      final field =
+          targetField == null ? element.key : element.getField(targetField);
+
+      return field == localKey;
+    });
   }
 
-  ReturnType? hasOne<ReturnType extends HiveObjectDub>(
-    String boxName, [
-    int? keyTemp,
-  ]) {
-    final selected = hiveW
-        .getBox<ReturnType>(boxName)
-        .where((element) => element.key == (keyTemp ?? key));
+  ReturnType? hasOne<ReturnType extends HiveObjectWrapper>(
+    String boxName, {
+    String? targetField,
+    int? localKey,
+  }) {
+    localKey = (localKey ?? key);
+
+    final box = hiveW.getBox<ReturnType>(boxName);
+
+    final selected = box.where((element) {
+      final field =
+          targetField == null ? element.key : element.getField(targetField);
+
+      return field == localKey;
+    });
 
     if (selected.isEmpty) {
       return null;

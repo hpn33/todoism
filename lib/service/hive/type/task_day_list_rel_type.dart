@@ -7,7 +7,7 @@ import 'task_type.dart';
 part 'task_day_list_rel_type.g.dart';
 
 @HiveType(typeId: 5)
-class TaskDayListRel extends HiveObjectDub {
+class TaskDayListRel extends HiveObjectWrapper {
   @HiveField(0)
   late int listId;
 
@@ -15,18 +15,19 @@ class TaskDayListRel extends HiveObjectDub {
   late int taskId;
 
   getField(name) {
-    {
-      if (name == 'listId')
-        return listId;
-      else if (name == 'taskId') return taskId;
+    if (name == 'listId') {
+      return listId;
+    }
+    if (name == 'taskId') {
+      return taskId;
     }
   }
 
   DayList? dayList() {
-    return hasOne('day_lists', listId);
+    return hasOne('day_lists', localKey: listId);
   }
 
   Task? task() {
-    return hasOne('tasks', taskId);
+    return hasOne('tasks', localKey: taskId);
   }
 }
