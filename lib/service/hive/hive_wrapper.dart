@@ -47,13 +47,16 @@ class HiveWrapper extends HostHiveWrapper {
     for (final box in boxs.values) {
       await box.load();
     }
-    // boxs.forEach((key, value) async => await value.load());
   }
 
-  Future<void> addTask(String title, String description) async {
+  Future<void> addTask(
+    String title,
+    String description,
+    DateTime dateTime,
+  ) async {
     final taskId = await tasks.create(title, description);
 
-    final dayListId = await dayLists.getOrCreate(DateTime.now());
+    final dayListId = await dayLists.getOrCreate(dateTime);
 
     taskDayListRels.submit(taskId, dayListId);
   }

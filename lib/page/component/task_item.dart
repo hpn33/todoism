@@ -20,9 +20,12 @@ class TaskItem extends StatelessWidget {
                 },
               ),
               Checkbox(
-                tristate: task.state == null ? true : false,
-                value: task.state,
-                onChanged: (v) {},
+                // tristate: task.state == null ? true : false,
+                value: task.state == null ? false : task.state,
+                onChanged: (v) {
+                  task.state = v;
+                  task.save();
+                },
               ),
               Text(
                 task.title,

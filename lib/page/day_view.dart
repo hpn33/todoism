@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:intl/intl.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -33,7 +34,7 @@ class DayView extends HookWidget {
                   child: Text('<'),
                 ),
                 TextButton(
-                  child: Text(dateTime.value.toString()),
+                  child: Text(DateFormat.yMd().format(dateTime.value)),
                   onPressed: () async {
                     final time = await showDatePicker(
                       context: context,
