@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/day_list_type.dart';
 
@@ -23,11 +24,7 @@ class TaskDayListRel extends HiveObjectWrapper {
     }
   }
 
-  DayList? dayList() {
-    return hasOne('day_lists', localKey: listId);
-  }
+  DayList? get dayList => hiveW.hasOne(hiveW.dayLists, listId);
 
-  Task? task() {
-    return hasOne('tasks', localKey: taskId);
-  }
+  Task? get task => hiveW.hasOne(hiveW.tasks, taskId);
 }

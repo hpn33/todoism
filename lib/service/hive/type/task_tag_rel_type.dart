@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:hive_wrapper/hive_wrapper.dart';
 
 import '../hive_wrapper.dart';
 import 'tag_type.dart';
@@ -23,11 +24,7 @@ class TaskTagRel extends HiveObjectWrapper {
     }
   }
 
-  Task? task() {
-    return hasOne('tasks', localKey: taskId);
-  }
+  Task? get task => hiveW.hasOne(hiveW.tasks, taskId);
 
-  Tag? tag() {
-    return hasOne('tags', localKey: tagId);
-  }
+  Tag? get tag => hiveW.hasOne(hiveW.tags, tagId);
 }

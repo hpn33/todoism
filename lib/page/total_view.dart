@@ -15,7 +15,7 @@ class TotalView extends HookWidget {
 
     final content = hiveW.dayLists.sorted().map(
       (dayList) {
-        if (dayList.tasks().isEmpty) {
+        if (dayList.tasks.isEmpty) {
           return SizedBox();
         }
 
@@ -23,7 +23,7 @@ class TotalView extends HookWidget {
           children: [
             Text(DateFormat.yMd().format(dayList.date)),
             Divider(),
-            ...dayList.tasks().map((task) {
+            ...dayList.tasks.map((task) {
               if (!all.value) {
                 if (task.state != completed.value) {
                   return SizedBox();

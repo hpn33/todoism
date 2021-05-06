@@ -16,7 +16,7 @@ class DayView extends HookWidget {
     final tasks = [];
     final dayList = hiveW.dayLists.ofDay(dateTime.value);
     if (dayList != null) {
-      tasks.addAll(dayList.tasks());
+      tasks.addAll(dayList.tasks);
     }
 
     return Column(

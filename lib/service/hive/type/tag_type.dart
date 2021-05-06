@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 
 part 'tag_type.g.dart';
@@ -21,15 +22,7 @@ class Tag extends HiveObjectWrapper {
     }
   }
 
-  Tag? parentTag() {
-    if (parentId == null) {
-      return null;
-    }
+  Tag? get parentTag => hiveW.hasOne(hiveW.tags, parentId);
 
-    return hasOne('tags', localKey: parentId);
-  }
-
-  Iterable<Tag> subTags() {
-    return hasMany('tags', targetField: 'parentId');
-  }
+  Iterable<Tag> get subTags => hiveW.belongsTo(key, hiveW.tags, 'parentId');
 }
