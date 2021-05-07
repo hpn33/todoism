@@ -24,10 +24,6 @@ class HiveWrapper extends HostHiveWrapper {
     'task_day_list_rels': BoxTaskDayListRels(),
   };
 
-  BoxWrapper<BoxType> getBox<BoxType>(String boxName) {
-    return boxs[boxName] as BoxWrapper<BoxType>;
-  }
-
   BoxTasks get tasks => boxs['tasks'] as BoxTasks;
   BoxDayLists get dayLists => boxs['day_lists'] as BoxDayLists;
   BoxTags get tags => boxs['tags'] as BoxTags;
