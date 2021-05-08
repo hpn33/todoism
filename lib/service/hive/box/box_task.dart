@@ -16,4 +16,23 @@ class BoxTasks extends BoxWrapper<Task> {
         ..state = false,
     );
   }
+
+  // return any task that have at last one tag filter
+  Iterable<Task> byFilter(List<int> tagsId) {
+    if (tagsId.isEmpty) {
+      return all;
+    }
+
+    return where(
+      (task) {
+        for (final rel in task.taskTagRels) {
+          if (tagsId.contains(rel.tagId)) {
+            return true;
+          }
+        }
+
+        return false;
+      },
+    );
+  }
 }

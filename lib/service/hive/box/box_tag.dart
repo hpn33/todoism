@@ -8,13 +8,13 @@ class BoxTags extends BoxWrapper<Tag> {
   @override
   Future<void> initBox(Box<Tag> box) async {}
 
-  Future<int> getOrCreate(String title) {
+  Future<int> getOrCreate(String title) async {
     final list = where((element) => element.title == title);
 
     if (list.isNotEmpty) {
       return list.first.key;
     }
 
-    return box.add(Tag()..title = title);
+    return await box.add(Tag()..title = title);
   }
 }
