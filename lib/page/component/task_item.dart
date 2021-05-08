@@ -46,7 +46,16 @@ class TaskItem extends StatelessWidget {
                     children: [
                       Text('description'),
                       SizedBox(width: 10),
-                      Text(task.description),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(task.description),
+                        ),
+                      )
                     ],
                   ),
                 ],
@@ -60,8 +69,19 @@ class TaskItem extends StatelessWidget {
                     children: [
                       Text('tags'),
                       SizedBox(width: 10),
-                      Wrap(
-                        children: tags.map((e) => Text(e.title)).toList(),
+                      Expanded(
+                        child: Wrap(
+                          children: tags
+                              .map(
+                                (e) => ActionChip(
+                                  onPressed: () {},
+                                  label: Text(
+                                    e.title,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ],
                   ),

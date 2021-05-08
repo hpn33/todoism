@@ -22,7 +22,10 @@ class TotalView extends HookWidget {
         return Column(
           children: [
             Text(DateFormat.yMd().format(dayList.date)),
-            Divider(),
+            Divider(
+              color: Colors.blue[200],
+              thickness: 10,
+            ),
             ...dayList.tasks.map((task) {
               if (!all.value) {
                 if (task.state != completed.value) {
@@ -31,7 +34,8 @@ class TotalView extends HookWidget {
               }
 
               return TaskItem(task: task);
-            })
+            }),
+            SizedBox(height: 50),
           ],
         );
       },

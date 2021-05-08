@@ -29,8 +29,5 @@ class Task extends HiveObjectWrapper {
   Iterable<DayList> get dayLists =>
       taskDayListRels.joinTo(hiveW.dayLists, (e) => e.key, uniqe: true);
 
-  Iterable<Tag> get tags {
-    print(taskTagRels);
-    return taskTagRels.joinTo(hiveW.tags, (e) => e.tagId);
-  }
+  Iterable<Tag> get tags => taskTagRels.joinTo(hiveW.tags, (e) => e.tagId);
 }
