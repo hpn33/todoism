@@ -7,4 +7,12 @@ class BoxTaskTagRels extends BoxWrapper<TaskTagRel> {
 
   @override
   Future<void> initBox(Box<TaskTagRel> box) async {}
+
+  Future<int> submit(int taskId, int tagId) {
+    return box.add(
+      TaskTagRel()
+        ..taskId = taskId
+        ..tagId = tagId,
+    );
+  }
 }

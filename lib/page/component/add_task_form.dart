@@ -14,6 +14,8 @@ class AddTaskForm extends HookWidget {
     );
     final titleText = useTextEditingController();
     final descriptText = useTextEditingController();
+    final tagText = useTextEditingController();
+    final tagList = useState(<String>[]);
 
     return Card(
       child: Padding(
@@ -31,10 +33,16 @@ class AddTaskForm extends HookWidget {
                   icon: Icon(Icons.add),
                   onPressed: () {
                     hiveW.addTask(
-                        titleText.text, descriptText.text, dateTime.value);
+                      titleText.text,
+                      descriptText.text,
+                      dateTime.value,
+                      tagList.value,
+                    );
 
                     titleText.clear();
                     descriptText.clear();
+                    tagText.clear();
+                    tagList.value = [];
                   },
                 ),
               ],
@@ -83,6 +91,29 @@ class AddTaskForm extends HookWidget {
               decoration: InputDecoration(border: OutlineInputBorder()),
               minLines: 3,
               maxLines: 5,
+            ),
+            Text('Tags'),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: tagText,
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                    // onSubmitted: () {},
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    tagList.value = [...tagList.value, tagText.text];
+
+                    tagText.clear();
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: tagList.value.map((e) => Text(e)).toList(),
             ),
           ],
         ),

@@ -19,7 +19,7 @@ class TagAdapter extends TypeAdapter<Tag> {
     return Tag()
       ..parentId = fields[0] as int?
       ..title = fields[1] as String
-      ..description = fields[2] as String;
+      ..description = fields[2] as String?;
   }
 
   @override

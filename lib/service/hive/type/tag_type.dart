@@ -14,7 +14,7 @@ class Tag extends HiveObjectWrapper {
   late String title;
 
   @HiveField(2)
-  late String description;
+  String? description;
 
   getField(String name) {
     if (name == 'parentId') {

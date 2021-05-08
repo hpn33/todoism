@@ -49,11 +49,18 @@ class HiveWrapper extends HostHiveWrapper {
     String title,
     String description,
     DateTime dateTime,
+    List<String> tagList,
   ) async {
     final taskId = await tasks.create(title, description);
 
     final dayListId = await dayLists.getOrCreate(dateTime);
 
     taskDayListRels.submit(taskId, dayListId);
+
+    for (final tag in tagList) {
+      final id = await tags.getOrCreate(tag);
+
+      taskTagRels.submit(taskId, id);
+    }
   }
 }
