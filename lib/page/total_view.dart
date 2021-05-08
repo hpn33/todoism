@@ -67,12 +67,14 @@ class TotalView extends HookWidget {
             ),
           ),
         ),
-        Scrollbar(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+        Expanded(
+          child: Scrollbar(
             child: SingleChildScrollView(
-              child: Column(
-                children: content,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: content,
+                ),
               ),
             ),
           ),

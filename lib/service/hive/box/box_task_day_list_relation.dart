@@ -8,8 +8,8 @@ class BoxTaskDayListRels extends BoxWrapper<TaskDayListRel> {
   @override
   Future<void> initBox(Box<TaskDayListRel> box) async {}
 
-  void submit(int taskId, int dayListId) {
-    box.add(
+  Future<int> submit(int taskId, int dayListId) {
+    return box.add(
       TaskDayListRel()
         ..taskId = taskId
         ..listId = dayListId,
