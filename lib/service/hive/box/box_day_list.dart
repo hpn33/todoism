@@ -2,6 +2,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/day_list_type.dart';
 
+import '../hive_wrapper.dart';
+
 class BoxDayLists extends BoxWrapper<DayList> {
   BoxDayLists() : super('day_lists');
 
@@ -38,5 +40,14 @@ class BoxDayLists extends BoxWrapper<DayList> {
 
   Iterable<DayList> sorted() {
     return (all.toList()..sort((a, b) => b.date.compareTo(a.date)));
+  }
+
+  Future<void> setOnTask(
+    DateTime dateTime, {
+    required int taskId,
+  }) async {
+    final dayListId = await getOrCreate(dateTime);
+
+    hiveW.taskDayListRels.submit(taskId, dayListId);
   }
 }
