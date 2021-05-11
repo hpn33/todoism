@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:todoism/service/hive/hive_wrapper.dart';
+import 'package:todoism/service/hive/type/tag_type.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class TaskItem extends StatelessWidget {
   final Task task;
@@ -60,36 +64,59 @@ class TaskItem extends StatelessWidget {
                   ),
                 ],
               ),
-            if (tags.isNotEmpty)
-              Column(
-                children: [
-                  Divider(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('tags'),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Wrap(
-                          children: tags
-                              .map(
-                                (e) => ActionChip(
-                                  onPressed: () {},
-                                  label: Text(
-                                    e.title,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            // if (tags.isNotEmpty)
+            tagsBuilder(tags),
           ],
         ),
       ),
+    );
+  }
+
+  Widget tagsBuilder(Iterable<Tag> tags) {
+    return HookBuilder(
+      builder: (BuildContext context) {
+        final tagText = useTextEditingController();
+
+        useListenable(hiveW.tags.box.listenable());
+
+        return Column(
+          children: [
+            Divider(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('tags'),
+                SizedBox(width: 10),
+                Wrap(
+                  children: [
+                    ...tags
+                        .map(
+                          (e) => ActionChip(
+                            onPressed: () {},
+                            label: Text(
+                              e.title,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    SizedBox(
+                      width: 120,
+                      child: TextField(
+                        controller: tagText,
+                        onSubmitted: (v) {
+                          task.addTag(v);
+
+                          tagText.clear();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -64,13 +64,37 @@ class DayView extends HookWidget {
               padding: const EdgeInsets.all(8.0),
               child: SingleChildScrollView(
                 child: Column(
-                  children: tasks.map((task) => TaskItem(task: task)).toList(),
+                  children: [
+                    // AddTaskItem(),
+                    ...tasks.map((task) => TaskItem(task: task)).toList(),
+                  ],
                 ),
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class AddTaskItem extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final titleText = useTextEditingController();
+
+    return Card(
+      child: Row(
+        children: [
+          Expanded(child: TextField(controller: titleText)),
+          IconButton(
+            icon: Icon(Icons.done),
+            onPressed: () {
+              // hiveW.addTask(titleText.text);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

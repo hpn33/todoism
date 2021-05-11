@@ -19,45 +19,47 @@ class TagView extends HookWidget {
 
     return Column(
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ...tags
-                    .map(
-                      (tag) => FilterChip(
-                        selected: filters.value
-                            .where((element) => element == tag.key)
-                            .isNotEmpty,
-                        label: Text(tag.title),
-                        onSelected: (bool value) {
-                          if (value) {
-                            if (filters.value
-                                .where((element) => element == tag.key)
-                                .isEmpty) {
-                              filters.value = [
-                                ...filters.value,
-                                tag.key,
-                              ];
+        SizedBox(
+          width: double.infinity,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                children: [
+                  ...tags
+                      .map(
+                        (tag) => FilterChip(
+                          selected: filters.value
+                              .where((element) => element == tag.key)
+                              .isNotEmpty,
+                          label: Text(tag.title),
+                          onSelected: (bool value) {
+                            if (value) {
+                              if (filters.value
+                                  .where((element) => element == tag.key)
+                                  .isEmpty) {
+                                filters.value = [
+                                  ...filters.value,
+                                  tag.key,
+                                ];
+                              }
+
+                              return;
                             }
 
-                            return;
-                          }
-
-                          if (filters.value
-                              .where((element) => element == tag.key)
-                              .isNotEmpty) {
-                            filters.value = [
-                              ...filters.value..remove(tag.key),
-                            ];
-                          }
-                        },
-                      ),
-                    )
-                    .toList(),
-              ],
+                            if (filters.value
+                                .where((element) => element == tag.key)
+                                .isNotEmpty) {
+                              filters.value = [
+                                ...filters.value..remove(tag.key),
+                              ];
+                            }
+                          },
+                        ),
+                      )
+                      .toList(),
+                ],
+              ),
             ),
           ),
         ),
@@ -68,7 +70,11 @@ class TagView extends HookWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ...filteredTask.map((e) => TaskItem(task: e)).toList(),
+                    ...filteredTask
+                        .map(
+                          (e) => TaskItem(task: e),
+                        )
+                        .toList(),
                   ],
                 ),
               ),
