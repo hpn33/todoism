@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todoism/page/component/task_item.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
@@ -26,15 +27,22 @@ class TotalView extends HookWidget {
               color: Colors.blue[200],
               thickness: 10,
             ),
-            ...dayList.tasks.map((task) {
-              if (!all.value) {
-                if (task.state != completed.value) {
-                  return SizedBox();
+            ...dayList.tasks.map(
+              (task) {
+                if (!all.value) {
+                  if (task.state != completed.value) {
+                    return SizedBox();
+                  }
                 }
-              }
 
-              return TaskItem(task: task);
-            }),
+                return ProviderScope(
+                  overrides: [
+                    currentTask.overrideWithValue(task),
+                  ],
+                  child: const TaskItem(),
+                );
+              },
+            ),
             SizedBox(height: 50),
           ],
         );

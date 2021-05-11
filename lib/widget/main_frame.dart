@@ -7,15 +7,18 @@ class MainFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: HSLColor.fromColor(Colors.white).withLightness(0.8).toColor(),
-      child: Center(
-        child: Container(
-          width: 1000,
-          child: Material(
-            elevation: 6,
-            color: Colors.white,
-            child: child,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Material(
+        color: HSLColor.fromColor(Colors.white).withLightness(0.8).toColor(),
+        child: Center(
+          child: Container(
+            width: 1000,
+            child: Material(
+              elevation: 6,
+              color: Colors.white,
+              child: child,
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -66,7 +67,16 @@ class DayView extends HookWidget {
                 child: Column(
                   children: [
                     // AddTaskItem(),
-                    ...tasks.map((task) => TaskItem(task: task)).toList(),
+                    ...tasks
+                        .map(
+                          (task) => ProviderScope(
+                            overrides: [
+                              currentTask.overrideWithValue(task),
+                            ],
+                            child: const TaskItem(),
+                          ),
+                        )
+                        .toList(),
                   ],
                 ),
               ),
