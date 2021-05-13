@@ -12,15 +12,21 @@ class TaskItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TitleComp(),
-            DescriptionComp(),
-            tagsBuilder(),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: Material(
+        elevation: 6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TitleComp(),
+              SizedBox(height: 10),
+              DescriptionComp(),
+              SizedBox(height: 10),
+              tagsBuilder(),
+            ],
+          ),
         ),
       ),
     );
@@ -35,40 +41,32 @@ class TaskItem extends HookWidget {
 
         useListenable(hiveW.tags.box.listenable());
 
-        return Column(
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Divider(),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Container(width: 80),
+            Wrap(
               children: [
-                Container(
-                  width: 80,
-                  child: Text('tags'),
-                ),
-                Wrap(
-                  children: [
-                    ...task.tags
-                        .map(
-                          (e) => ActionChip(
-                            onPressed: () {},
-                            label: Text(
-                              e.title,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    SizedBox(
-                      width: 120,
-                      child: TextField(
-                        controller: tagText,
-                        onSubmitted: (v) {
-                          task.addTag(v);
-
-                          tagText.clear();
-                        },
+                ...task.tags
+                    .map(
+                      (e) => ActionChip(
+                        onPressed: () {},
+                        label: Text(
+                          e.title,
+                        ),
                       ),
-                    ),
-                  ],
+                    )
+                    .toList(),
+                SizedBox(
+                  width: 120,
+                  child: TextField(
+                    controller: tagText,
+                    onSubmitted: (v) {
+                      task.addTag(v);
+
+                      tagText.clear();
+                    },
+                  ),
                 ),
               ],
             ),
@@ -176,80 +174,70 @@ class DescriptionComp extends HookWidget {
     final textEditingController = useTextEditingController();
     final textFieldFocusNode = useFocusNode();
 
-    return Column(
-      children: [
-        Divider(),
-        Focus(
-          focusNode: itemFocus,
-          onFocusChange: (focused) {
-            if (focused) {
-              textEditingController.text = task.description;
-            } else {
-              if (task.description != textEditingController.text) {
-                task.description = textEditingController.text;
-                task.save();
-              }
-            }
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 80,
-                child: Text('description'),
-              ),
+    return Focus(
+      focusNode: itemFocus,
+      onFocusChange: (focused) {
+        if (focused) {
+          textEditingController.text = task.description;
+        } else {
+          if (task.description != textEditingController.text) {
+            task.description = textEditingController.text;
+            task.save();
+          }
+        }
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(width: 80),
 
-              // content
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    itemFocus.requestFocus();
-                    textFieldFocusNode.requestFocus();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: itemFocus.hasFocus
-                        ? Stack(
-                            children: [
-                              TextField(
-                                autofocus: true,
-                                focusNode: textFieldFocusNode,
-                                controller: textEditingController,
-                                minLines: 2,
-                                maxLines: 10,
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: IconButton(
-                                  icon: Icon(Icons.done),
-                                  onPressed: () {
-                                    FocusScope.of(context).unfocus();
-                                  },
-                                ),
-                              ),
-                            ],
-                          )
-                        : task.description.length > 0
-                            ? Text(task.description)
-                            : IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () {
-                                  itemFocus.requestFocus();
-                                  textFieldFocusNode.requestFocus();
-                                },
-                              ),
-                  ),
+          // content
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                itemFocus.requestFocus();
+                textFieldFocusNode.requestFocus();
+              },
+              child: Container(
+                padding: (itemFocus.hasFocus || task.description.length > 0)
+                    ? const EdgeInsets.all(8)
+                    : null,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              )
-            ],
-          ),
-        ),
-      ],
+                child: itemFocus.hasFocus
+                    ? Stack(
+                        children: [
+                          TextField(
+                            autofocus: true,
+                            focusNode: textFieldFocusNode,
+                            controller: textEditingController,
+                            minLines: 1,
+                            maxLines: 10,
+                          ),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: IconButton(
+                              icon: Icon(Icons.done),
+                              onPressed: () {
+                                FocusScope.of(context).unfocus();
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    : task.description.length > 0
+                        ? Text(task.description)
+                        : InkWell(
+                            child: Icon(Icons.add, size: 18),
+                          ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
