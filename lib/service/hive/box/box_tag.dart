@@ -20,7 +20,10 @@ class BoxTags extends BoxWrapper<Tag> {
     return await box.add(Tag()..title = title);
   }
 
-  Future<void> setOnTask(String tag, {required int taskId}) async {
+  Future<void> setOnTask(
+    String tag, {
+    required int taskId,
+  }) async {
     final tagId = await getOrCreate(tag);
 
     hiveW.taskTagRels.submit(taskId, tagId);

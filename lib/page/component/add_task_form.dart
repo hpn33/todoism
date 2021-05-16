@@ -3,6 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 
+import 'package:todoism/service/hive/type/tag_type.dart';
+import 'package:todoism/widget/autocomplete.dart';
+
 class AddTaskForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,8 +17,9 @@ class AddTaskForm extends HookWidget {
     );
     final titleText = useTextEditingController();
     final descriptText = useTextEditingController();
-    final tagText = useTextEditingController();
-    final tagList = useState(<String>[]);
+    // final tagText = useTextEditingController();
+    final tagList = useState(<Tag>[]);
+    // final tag = useState<Tag?>(null);
 
     return Card(
       child: Padding(
@@ -41,7 +45,7 @@ class AddTaskForm extends HookWidget {
 
                     titleText.clear();
                     descriptText.clear();
-                    tagText.clear();
+                    // tagText.clear();
                     tagList.value = [];
                   },
                 ),
@@ -96,24 +100,32 @@ class AddTaskForm extends HookWidget {
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: tagText,
+                  child: AutoCompleteTextField<Tag>(
                     decoration: InputDecoration(border: OutlineInputBorder()),
-                    // onSubmitted: () {},
+                    suggestions: hiveW.tags.all.toList(),
+                    itemSubmitted: (t) {
+                      tagList.value = [...tagList.value, t];
+                    },
+                    textSubmitted: (t) {
+                      tagList.value = [...tagList.value, Tag()..title = t];
+                    },
+                    itemFilter: (a, b) => a.title.contains(b),
+                    itemBuilder: (context, item) => Text(item.title),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    tagList.value = [...tagList.value, tagText.text];
-
-                    tagText.clear();
-                  },
                 ),
               ],
             ),
-            Column(
-              children: tagList.value.map((e) => Text(e)).toList(),
+            Wrap(
+              children: tagList.value
+                  .map(
+                    (e) => ActionChip(
+                      label: Text(e.title),
+                      onPressed: () {
+                        tagList.value = [...tagList.value..remove(e)];
+                      },
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ),
