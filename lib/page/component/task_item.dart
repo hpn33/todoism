@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
+import 'package:todoism/service/hive/type/tag_type.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todoism/widget/autocomplete.dart';
 
 final currentTask = ScopedProvider<Task>(null);
 
@@ -37,9 +39,8 @@ class TaskItem extends HookWidget {
       builder: (BuildContext context) {
         final task = useProvider(currentTask);
 
-        final tagText = useTextEditingController();
-
-        useListenable(hiveW.tags.box.listenable());
+        useListenable(hiveW.tags.box.listenable()
+          ..addListener(() => print('tag change')));
 
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,12 +60,15 @@ class TaskItem extends HookWidget {
                     .toList(),
                 SizedBox(
                   width: 120,
-                  child: TextField(
-                    controller: tagText,
-                    onSubmitted: (v) {
-                      task.addTag(v);
-
-                      tagText.clear();
+                  child: AutoCompleteTextField<Tag>(
+                    suggestions: hiveW.tags.all.toList(),
+                    itemFilter: (a, b) => a.title.contains(b),
+                    itemBuilder: (context, t) => Text(t.title),
+                    textSubmitted: (text) {
+                      task.addTag(Tag()..title = text);
+                    },
+                    itemSubmitted: (tag) {
+                      task.addTag(tag);
                     },
                   ),
                 ),

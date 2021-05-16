@@ -31,7 +31,12 @@ class Task extends HiveObjectWrapper {
 
   Iterable<Tag> get tags => taskTagRels.joinTo(hiveW.tags, (e) => e.tagId);
 
-  Future<void> addTag(String tag) async {
-    hiveW.tags.setOnTask(tag, taskId: key);
+  Future<void> addTag(Tag tag) async {
+    if (tag.key == null) {
+      hiveW.tags.setOnTask(tag.title, taskId: key);
+      return;
+    }
+
+    hiveW.taskTagRels.submit(key, tag.key);
   }
 }
