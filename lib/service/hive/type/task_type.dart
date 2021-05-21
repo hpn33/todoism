@@ -20,6 +20,15 @@ class Task extends HiveObjectWrapper {
   @HiveField(2)
   bool? state;
 
+  Task();
+
+  factory Task.empty() {
+    return Task()
+      ..title = ''
+      ..description = ''
+      ..state = false;
+  }
+
   Iterable<TaskDayListRel> get taskDayListRels =>
       hiveW.belongsTo(key, hiveW.taskDayListRels, 'taskId');
 

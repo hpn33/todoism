@@ -5,9 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'component/add_task_item.dart';
 import 'component/task_item.dart';
 
-class DayView extends HookWidget {
+class DateView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final dateTime = useState(DateTime.now());
@@ -17,7 +18,7 @@ class DayView extends HookWidget {
     final tasks = [];
     final dayList = hiveW.dayLists.ofDay(dateTime.value);
     if (dayList != null) {
-      tasks.addAll(dayList.tasks);
+      tasks.addAll(dayList.tasks.toList().reversed);
     }
 
     return Column(
@@ -66,7 +67,7 @@ class DayView extends HookWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // AddTaskItem(),
+                    AddTaskItem(dateTime: dateTime.value),
                     ...tasks
                         .map(
                           (task) => ProviderScope(
@@ -84,27 +85,6 @@ class DayView extends HookWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class AddTaskItem extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final titleText = useTextEditingController();
-
-    return Card(
-      child: Row(
-        children: [
-          Expanded(child: TextField(controller: titleText)),
-          IconButton(
-            icon: Icon(Icons.done),
-            onPressed: () {
-              // hiveW.addTask(titleText.text);
-            },
-          ),
-        ],
-      ),
     );
   }
 }
