@@ -410,11 +410,15 @@ class AutoCompleteTextFieldState<T> extends State<AutoCompleteTextField> {
     if (focusNode == null) {
       textField.focusNode!.dispose();
     }
-    // if (controller == null) {
-    textField.controller!.dispose();
-    // }
 
-    listSuggestionsEntry!.remove();
+    if (controller == null) {
+      textField.controller!.dispose();
+    }
+
+    if (listSuggestionsEntry != null) {
+      listSuggestionsEntry!.remove();
+    }
+
     super.dispose();
   }
 
