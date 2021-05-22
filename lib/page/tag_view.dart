@@ -16,7 +16,7 @@ class TagView extends HookWidget {
 
     final tags = hiveW.tags.all;
 
-    final filteredTask = hiveW.tasks.byFilter(filters.value);
+    final filteredTask = hiveW.tasks.byTags(filters.value);
 
     return Column(
       children: [

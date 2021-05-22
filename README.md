@@ -11,6 +11,23 @@
 
 
 
+## views
+
+### todos
+show all todos
+
+### date
+filter by day date
+
+### tag
+filter by tags
+
+### flag
+this is todo that can mark on any day
+
+
+
+
 
 task
 id
@@ -69,7 +86,7 @@ list to done
 اگر لیست تمام کار ها رو نمایش بدیم هر کار منحصر به فرد هست
 
 
-برای دیتا بیس
+## برای دیتا بیس
 
 task table
 برای کار
@@ -136,9 +153,3 @@ tag_id
 هر دو امکان پذیر هستند
 
 
-
-
-
-## TODO
-- [ ] auto complete for add tags
-- [ ] better add tag ui
