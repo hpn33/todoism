@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:todoism/page/todo_view.dart';
 import 'package:todoism/widget/main_frame.dart';
 
 import 'date_view.dart';
 import 'flag_view.dart';
+import 'setting_view.dart';
 import 'tag_view.dart';
+import 'todo_view.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -17,17 +18,23 @@ class Home extends StatelessWidget {
 }
 
 class TabView extends HookWidget {
-  final titles = const ['todo', 'date', 'tags', 'flags'];
+  final views = {
+    'todo': TodoView(),
+    'date': DateView(),
+    'tags': TagView(),
+    'flags': FlagView(),
+    'setting': SettingView(),
+  };
 
   @override
   Widget build(BuildContext context) {
-    final tabController = useTabController(initialLength: titles.length);
+    final tabController = useTabController(initialLength: views.length);
 
     return Column(
       children: [
         TabBar(
           controller: tabController,
-          tabs: titles
+          tabs: views.keys
               .map((e) =>
                   Tab(child: Text(e, style: TextStyle(color: Colors.black))))
               .toList(),
@@ -35,12 +42,7 @@ class TabView extends HookWidget {
         Expanded(
           child: TabBarView(
             controller: tabController,
-            children: [
-              TodoView(),
-              DateView(),
-              TagView(),
-              FlagView(),
-            ],
+            children: views.values.toList(),
           ),
         ),
       ],
