@@ -15,56 +15,74 @@ class TodoView extends HookWidget {
     final completed = useState(false);
     final showComplete = useState(false);
 
-    // final searchField = useState('');
-    // final searchController = useTextEditingController(text: '');
+    final searchField = useState('');
+    final searchController = useTextEditingController();
 
-    final content = createContent(all.value, completed.value, ''
-        // searchField.value,
-        );
+    final content = createContent(
+      all.value,
+      completed.value,
+      searchField.value,
+    );
 
-    return Column(
+    return Row(
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
+        Expanded(
+          child: Scrollbar(
+            child: ListView(
               children: [
-                Text('Filter'),
-                Checkbox(
-                  value: all.value,
-                  onChanged: (v) {
-                    all.value = v!;
-                    showComplete.value = v;
-                  },
-                ),
-                Text('All'),
-                if (!all.value)
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: completed.value,
-                        onChanged: (v) => completed.value = v!,
-                      ),
-                      Text('Completed'),
-                    ],
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text('Search'),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: searchController,
+                            onChanged: (v) {
+                              searchField.value = v;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                // SizedBox(width: 30),
-                // Text('Search'),
-                // SizedBox(width: 10),
-                // Expanded(
-                //   child: TextField(
-                //     controller: searchController,
-                //     onChanged: (v) {
-                //       searchController.text = v;
-                //       searchField.value = v;
-                //     },
-                //   ),
-                // ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text('State'),
+                        Checkbox(
+                          value: all.value,
+                          onChanged: (v) {
+                            all.value = v!;
+                            showComplete.value = v;
+                          },
+                        ),
+                        Text('All'),
+                        if (!all.value)
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: completed.value,
+                                onChanged: (v) => completed.value = v!,
+                              ),
+                              Text('Completed'),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
         Expanded(
+          flex: 2,
           child: Scrollbar(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
