@@ -10,61 +10,78 @@ class TagView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final filters = useState(<int>[]);
+    final inner = useState(false);
 
     useListenable(hiveW.tasks.box.listenable());
     useListenable(hiveW.tags.box.listenable());
 
     final tags = hiveW.tags.all;
 
-    final filteredTask = hiveW.tasks.byTags(filters.value);
+    final filteredTask = hiveW.tasks.byTags(filters.value, inner: inner.value);
 
-    return Column(
+    return Row(
       children: [
-        SizedBox(
-          width: double.infinity,
+        Expanded(
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Wrap(
+              child: Column(
                 children: [
-                  ...tags
-                      .map(
-                        (tag) => FilterChip(
-                          selected: filters.value
-                              .where((element) => element == tag.key)
-                              .isNotEmpty,
-                          label: Text(tag.title),
-                          onSelected: (bool value) {
-                            if (value) {
-                              if (filters.value
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: inner.value,
+                        onChanged: (bool? value) {
+                          inner.value = value!;
+                        },
+                      ),
+                      Text('Inner'),
+                    ],
+                  ),
+                  Divider(),
+                  Wrap(
+                    children: [
+                      ...tags
+                          .map(
+                            (tag) => FilterChip(
+                              selected: filters.value
                                   .where((element) => element == tag.key)
-                                  .isEmpty) {
-                                filters.value = [
-                                  ...filters.value,
-                                  tag.key,
-                                ];
-                              }
+                                  .isNotEmpty,
+                              label: Text(tag.title),
+                              onSelected: (bool value) {
+                                if (value) {
+                                  if (filters.value
+                                      .where((element) => element == tag.key)
+                                      .isEmpty) {
+                                    filters.value = [
+                                      ...filters.value,
+                                      tag.key,
+                                    ];
+                                  }
 
-                              return;
-                            }
+                                  return;
+                                }
 
-                            if (filters.value
-                                .where((element) => element == tag.key)
-                                .isNotEmpty) {
-                              filters.value = [
-                                ...filters.value..remove(tag.key),
-                              ];
-                            }
-                          },
-                        ),
-                      )
-                      .toList(),
+                                if (filters.value
+                                    .where((element) => element == tag.key)
+                                    .isNotEmpty) {
+                                  filters.value = [
+                                    ...filters.value..remove(tag.key),
+                                  ];
+                                }
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
         ),
         Expanded(
+          flex: 2,
           child: Scrollbar(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
