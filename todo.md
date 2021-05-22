@@ -7,3 +7,4 @@
 - [ ] delete tag
 - [x] inner filtter for tags
 - [x] fix: refresh on changes
+- [ ] use table_calendar packages for date view

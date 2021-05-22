@@ -21,46 +21,70 @@ class DateView extends HookWidget {
       tasks.addAll(dayList.tasks.toList().reversed);
     }
 
-    return Column(
+    return Row(
       children: [
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    dateTime.value = dateTime.value.add(Duration(days: -1));
-                  },
-                  child: Text('<'),
-                ),
-                TextButton(
-                  child: Text(DateFormat.yMd().format(dateTime.value)),
-                  onPressed: () async {
-                    final time = await showDatePicker(
-                      context: context,
-                      initialDate: dateTime.value,
-                      firstDate: DateTime.now().add(Duration(days: -365)),
-                      lastDate: DateTime.now().add(Duration(days: 365)),
-                    );
+        Expanded(
+          child: Column(
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          dateTime.value =
+                              dateTime.value.add(Duration(days: -1));
+                        },
+                        child: Text('<'),
+                      ),
+                      TextButton(
+                        child: Text(DateFormat.yMd().format(dateTime.value)),
+                        onPressed: () async {
+                          final time = await showDatePicker(
+                            context: context,
+                            initialDate: dateTime.value,
+                            firstDate: DateTime.now().add(Duration(days: -365)),
+                            lastDate: DateTime.now().add(Duration(days: 365)),
+                          );
 
-                    if (time != null) {
-                      dateTime.value = time;
-                    }
-                  },
+                          if (time != null) {
+                            dateTime.value = time;
+                          }
+                        },
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          dateTime.value =
+                              dateTime.value.add(Duration(days: 1));
+                        },
+                        child: Text('>'),
+                      ),
+                    ],
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    dateTime.value = dateTime.value.add(Duration(days: 1));
-                  },
-                  child: Text('>'),
+              ),
+              Card(
+                child: Row(
+                  children: [
+                    // ...List.generate(
+                    //   7,
+                    //   (index) => Expanded(
+                    //     child: TextButton(
+                    //       onPressed: () {},
+                    //       child: Text(index.toString()),
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Expanded(
+          flex: 2,
           child: Scrollbar(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
