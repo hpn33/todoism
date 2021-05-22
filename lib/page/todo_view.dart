@@ -10,18 +10,30 @@ import 'component/task_item.dart';
 class TodoView extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    useListenable(hiveW.tasks.box.listenable());
+    // state
     final all = useState(true);
     final completed = useState(false);
     final showComplete = useState(false);
 
+    // search
     final searchField = useState('');
     final searchController = useTextEditingController();
+
+    // tag
+    final filters = useState(<int>[]);
+    final inner = useState(false);
+
+    useListenable(hiveW.tasks.box.listenable());
+    useListenable(hiveW.tags.box.listenable());
+
+    final tags = hiveW.tags.all;
 
     final content = createContent(
       all.value,
       completed.value,
       searchField.value,
+      filters.value,
+      inner.value,
     );
 
     return Row(
@@ -77,6 +89,65 @@ class TodoView extends HookWidget {
                     ),
                   ),
                 ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: inner.value,
+                              onChanged: (bool? value) {
+                                inner.value = value!;
+                              },
+                            ),
+                            Text('Inner'),
+                          ],
+                        ),
+                        Divider(),
+                        Wrap(
+                          children: [
+                            ...tags
+                                .map(
+                                  (tag) => FilterChip(
+                                    selected: filters.value
+                                        .where((element) => element == tag.key)
+                                        .isNotEmpty,
+                                    label: Text(tag.title),
+                                    onSelected: (bool value) {
+                                      if (value) {
+                                        if (filters.value
+                                            .where(
+                                                (element) => element == tag.key)
+                                            .isEmpty) {
+                                          filters.value = [
+                                            ...filters.value,
+                                            tag.key,
+                                          ];
+                                        }
+
+                                        return;
+                                      }
+
+                                      if (filters.value
+                                          .where(
+                                              (element) => element == tag.key)
+                                          .isNotEmpty) {
+                                        filters.value = [
+                                          ...filters.value..remove(tag.key),
+                                        ];
+                                      }
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -103,8 +174,14 @@ class TodoView extends HookWidget {
     );
   }
 
-  createContent(bool all, bool completed, String searchField) {
-    var content = hiveW.tasks.all;
+  List<ProviderScope> createContent(
+    bool all,
+    bool completed,
+    String searchField,
+    List<int> tagIds,
+    bool inner,
+  ) {
+    var content = hiveW.tasks.byTags(tagIds, inner: inner);
 
     if (!all) {
       content = content.where((element) => element.state == completed);
@@ -114,19 +191,15 @@ class TodoView extends HookWidget {
       content = content.where((element) => element.title == searchField);
     }
 
-    return content
-        .map(
-          (task) {
-            return ProviderScope(
-              overrides: [
-                currentTask.overrideWithValue(task),
-              ],
-              child: const TaskItem(),
-            );
-          },
-        )
-        .toList()
-        .reversed
-        .toList();
+    return content.map(
+      (task) {
+        return ProviderScope(
+          overrides: [
+            currentTask.overrideWithValue(task),
+          ],
+          child: const TaskItem(),
+        );
+      },
+    ).toList();
   }
 }
