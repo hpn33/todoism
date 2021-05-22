@@ -39,8 +39,7 @@ class TaskItem extends HookWidget {
       builder: (BuildContext context) {
         final task = useProvider(currentTask);
 
-        useListenable(hiveW.tags.box.listenable()
-          ..addListener(() => print('tag change')));
+        useListenable(hiveW.taskTagRels.box.listenable());
 
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,9 +51,7 @@ class TaskItem extends HookWidget {
                     .map(
                       (e) => ActionChip(
                         onPressed: () {},
-                        label: Text(
-                          e.title,
-                        ),
+                        label: Text(e.title),
                       ),
                     )
                     .toList(),
