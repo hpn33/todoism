@@ -26,54 +26,11 @@ class TaskItem extends HookWidget {
               SizedBox(height: 10),
               DescriptionComp(),
               SizedBox(height: 10),
-              tagsBuilder(),
+              TagComp(),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget tagsBuilder() {
-    return HookBuilder(
-      builder: (BuildContext context) {
-        final task = useProvider(currentTask);
-
-        useListenable(hiveW.taskTagRels.box.listenable());
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(width: 80),
-            Wrap(
-              children: [
-                ...task.tags
-                    .map(
-                      (e) => ActionChip(
-                        onPressed: () {},
-                        label: Text(e.title),
-                      ),
-                    )
-                    .toList(),
-                SizedBox(
-                  width: 120,
-                  child: AutoCompleteTextField<Tag>(
-                    suggestions: hiveW.tags.all.toList(),
-                    itemFilter: (a, b) => a.title.contains(b),
-                    itemBuilder: (context, t) => Text(t.title),
-                    textSubmitted: (text) {
-                      task.addTag(Tag()..title = text);
-                    },
-                    itemSubmitted: (tag) {
-                      task.addTag(tag);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
     );
   }
 }
@@ -239,6 +196,49 @@ class DescriptionComp extends HookWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class TagComp extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final task = useProvider(currentTask);
+
+    useListenable(hiveW.tags.box.listenable());
+    useListenable(hiveW.taskTagRels.box.listenable());
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(width: 80),
+        Wrap(
+          children: [
+            ...task.tags
+                .map(
+                  (e) => ActionChip(
+                    onPressed: () {},
+                    label: Text(e.title),
+                  ),
+                )
+                .toList(),
+            SizedBox(
+              width: 120,
+              child: AutoCompleteTextField<Tag>(
+                suggestions: hiveW.tags.all.toList(),
+                itemFilter: (a, b) => a.title.contains(b),
+                itemBuilder: (context, t) => Text(t.title),
+                textSubmitted: (text) {
+                  task.addTag(Tag()..title = text);
+                },
+                itemSubmitted: (tag) {
+                  task.addTag(tag);
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
