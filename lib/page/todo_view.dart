@@ -188,7 +188,7 @@ class TodoView extends HookWidget {
     }
 
     if (searchField.isNotEmpty) {
-      content = content.where((element) => element.title == searchField);
+      content = content.where((element) => element.title.contains(searchField));
     }
 
     return content.map(
