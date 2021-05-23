@@ -22,6 +22,15 @@ class Tag extends HiveObjectWrapper {
     }
   }
 
+  @override
+  Future<void> delete() {
+    hiveW.taskTagRels
+        .where((element) => element.tagId == key)
+        .forEach((element) => element.delete());
+
+    return super.delete();
+  }
+
   Tag? get parentTag => hiveW.hasOne(hiveW.tags, parentId);
 
   Iterable<Tag> get subTags => hiveW.belongsTo(key, hiveW.tags, 'parentId');
