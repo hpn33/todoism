@@ -1,6 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
+import 'package:todoism/service/hive/type/task_tag_rel_type.dart';
+
+import 'task_type.dart';
 
 part 'tag_type.g.dart';
 
@@ -34,4 +37,9 @@ class Tag extends HiveObjectWrapper {
   Tag? get parentTag => hiveW.hasOne(hiveW.tags, parentId);
 
   Iterable<Tag> get subTags => hiveW.belongsTo(key, hiveW.tags, 'parentId');
+
+  Iterable<TaskTagRel> get taskTagRels =>
+      hiveW.belongsTo(key, hiveW.taskTagRels, 'tagId');
+
+  Iterable<Task> get tasks => taskTagRels.joinTo(hiveW.tasks, (e) => e.taskId);
 }
