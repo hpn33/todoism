@@ -16,8 +16,17 @@
 ### todos
 show all todos
 
+- [x] add task freely
+- [x] delete task
+- [x] filter
+
 ### date
 filter by day date
+
+- [x] add task to day list
+- [ ] add exist task to day list
+- [ ] delete task from day lsit
+- [ ] 
 
 ### tag
 filter by tags

@@ -11,4 +11,4 @@
 - [ ] delete task from day list
 - [ ] task float panel
 - [x] how many task on a tag
-- [ ] 
+- [ ] add task to day list
