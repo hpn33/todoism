@@ -31,9 +31,15 @@ filter by day date
 ### tag
 filter by tags
 
+- [ ] add tag
+- [x] delete tag
+- [ ] list of task on tag
+
 ### flag
 this is todo that can mark on any day
 
+- [ ] add flag
+- [ ] check on day
 
 
 
