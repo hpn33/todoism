@@ -45,9 +45,9 @@ class DateView extends HookWidget {
                       focusedDay.value = _focusedDay;
 
                       final dayList = hiveW.dayLists.ofDay(_selectedDay);
-                      if (dayList != null) {
-                        tasks.value = dayList.tasks.toList().reversed.toList();
-                      }
+                      tasks.value = dayList != null
+                          ? dayList.tasks.toList().reversed.toList()
+                          : [];
                     }
                   },
                   onFormatChanged: (format) {
