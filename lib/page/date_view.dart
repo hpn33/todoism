@@ -20,7 +20,9 @@ class DateView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    useListenable(hiveW.tasks.box.listenable());
+    useListenable(hiveW.tasks.box.listenable()).addListener(() {
+      context.refresh(tasksProvider);
+    });
 
     final calendarFormat = useState(CalendarFormat.month);
     final focusedDay = useState(DateTime.now());
