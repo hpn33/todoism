@@ -10,15 +10,23 @@ import 'component/add_task_item.dart';
 import 'component/task_item.dart';
 
 class DateView extends HookWidget {
+  static final selectedDayP = StateProvider((ref) => DateTime.now());
+  final tasksProvider = FutureProvider<List<Task>>((ref) async {
+    final selectedDay = ref.watch(selectedDayP);
+
+    final dayList = hiveW.dayLists.ofDay(selectedDay.state);
+    return dayList != null ? dayList.tasks.toList().reversed.toList() : [];
+  });
+
   @override
   Widget build(BuildContext context) {
     useListenable(hiveW.tasks.box.listenable());
 
-    final tasks = useState(<Task>[]);
-
     final calendarFormat = useState(CalendarFormat.month);
     final focusedDay = useState(DateTime.now());
-    final selectedDay = useState<DateTime?>(null);
+    final selectedDay = useProvider(selectedDayP);
+
+    final tasks = useProvider(tasksProvider);
 
     return Row(
       children: [
@@ -32,22 +40,12 @@ class DateView extends HookWidget {
                   focusedDay: focusedDay.value,
                   calendarFormat: calendarFormat.value,
                   selectedDayPredicate: (day) {
-                    // Use `selectedDayPredicate` to determine which day is currently selected.
-                    // If this returns true, then `day` will be marked as selected.
-
-                    // Using `isSameDay` is recommended to disregard
-                    // the time-part of compared DateTime objects.
-                    return isSameDay(selectedDay.value, day);
+                    return isSameDay(selectedDay.state, day);
                   },
                   onDaySelected: (_selectedDay, _focusedDay) {
-                    if (!isSameDay(selectedDay.value, _selectedDay)) {
-                      selectedDay.value = _selectedDay;
+                    if (!isSameDay(selectedDay.state, _selectedDay)) {
+                      selectedDay.state = _selectedDay;
                       focusedDay.value = _focusedDay;
-
-                      final dayList = hiveW.dayLists.ofDay(_selectedDay);
-                      tasks.value = dayList != null
-                          ? dayList.tasks.toList().reversed.toList()
-                          : [];
                     }
                   },
                   onFormatChanged: (format) {
@@ -78,22 +76,28 @@ class DateView extends HookWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                AddTaskItem(dateTime: selectedDay.value),
+                AddTaskItem(dateTime: selectedDay.state),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: tasks.value.length,
-                    itemBuilder: (context, index) {
-                      final task = tasks.value[index];
+                  child: tasks.when(data: (_tasks) {
+                    return ListView.builder(
+                      itemCount: _tasks.length,
+                      itemBuilder: (context, index) {
+                        final task = _tasks[index];
 
-                      return ProviderScope(
-                        key: Key(task.title),
-                        overrides: [
-                          currentTask.overrideWithValue(task),
-                        ],
-                        child: TaskItem(key: Key(task.title)),
-                      );
-                    },
-                  ),
+                        return ProviderScope(
+                          key: Key(task.title),
+                          overrides: [
+                            currentTask.overrideWithValue(task),
+                          ],
+                          child: TaskItem(key: Key(task.title)),
+                        );
+                      },
+                    );
+                  }, loading: () {
+                    return Center(child: CircularProgressIndicator());
+                  }, error: (o, s) {
+                    return Center(child: Text('$o\n$s'));
+                  }),
                 ),
               ],
             ),
