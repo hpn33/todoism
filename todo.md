@@ -12,3 +12,5 @@
 - [ ] task float panel
 - [x] how many task on a tag
 - [ ] add task to day list
+- [ ] date view: task not gone after delete task
+- [x] date view: task not showen after add

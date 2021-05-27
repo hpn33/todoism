@@ -76,7 +76,12 @@ class DateView extends HookWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                AddTaskItem(dateTime: selectedDay.state),
+                AddTaskItem(
+                  dateTime: selectedDay.state,
+                  afterAdd: () {
+                    context.refresh(tasksProvider);
+                  },
+                ),
                 Expanded(
                   child: tasks.when(data: (_tasks) {
                     return ListView.builder(

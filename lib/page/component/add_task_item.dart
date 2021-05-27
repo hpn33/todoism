@@ -7,8 +7,9 @@ import 'package:todoism/service/hive/type/task_type.dart';
 final taskTemp = Provider((ref) => Task());
 
 class AddTaskItem extends HookWidget {
-  const AddTaskItem({this.dateTime, Key? key}) : super(key: key);
+  const AddTaskItem({this.dateTime, Key? key, this.afterAdd}) : super(key: key);
 
+  final VoidCallback? afterAdd;
   final DateTime? dateTime;
 
   @override
@@ -60,11 +61,18 @@ class AddTaskItem extends HookWidget {
     );
   }
 
-  void addTask(
+  Future<void> addTask(
     BuildContext context,
     TextEditingController textEditingController,
-  ) {
-    hiveW.addTaskQuick(textEditingController.text, date: dateTime);
+  ) async {
+    hiveW
+        .addTaskQuick(textEditingController.text, date: dateTime)
+        .then((value) {
+      if (afterAdd != null) {
+        afterAdd!();
+      }
+    });
+
     FocusScope.of(context).unfocus();
     textEditingController.clear();
   }

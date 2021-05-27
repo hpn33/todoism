@@ -46,7 +46,7 @@ class HiveWrapper extends HostHiveWrapper {
   }
 
   Future<void> addTaskQuick(String title, {DateTime? date}) async {
-    addTask(title, '', date, []);
+    await addTask(title, '', date, []);
   }
 
   Future<void> addTask(
@@ -58,16 +58,16 @@ class HiveWrapper extends HostHiveWrapper {
     final taskId = await tasks.create(title, description);
 
     if (dateTime != null) {
-      dayLists.setOnTask(dateTime, taskId: taskId);
+      await dayLists.setOnTask(dateTime, taskId: taskId);
     }
 
     for (final tag in tagList) {
       if (tag.key == null) {
-        tags.setOnTask(tag.title, taskId: taskId);
+        await tags.setOnTask(tag.title, taskId: taskId);
         continue;
       }
 
-      hiveW.taskTagRels.submit(taskId, tag.key);
+      await hiveW.taskTagRels.submit(taskId, tag.key);
     }
   }
 }
