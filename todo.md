@@ -14,5 +14,6 @@
 - [ ] add task to day list
 - [x] fix: date view: task not gone after delete task
 - [x] fix: date view: task not showen after add
-- [ ] dashboard view: not complete old task, today tasks, upcomming tasks
+- [x] dashboard view: not complete old task, today tasks, upcomming tasks
 - [ ] tag color
+- [ ] fix: when check task list not refreshed

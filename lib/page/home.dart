@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:todoism/page/dashboard_view.dart';
 import 'package:todoism/widget/main_frame.dart';
 
 import 'date_view.dart';
@@ -19,6 +20,7 @@ class Home extends StatelessWidget {
 
 class TabView extends HookWidget {
   final views = {
+    'dashboard': DashboardView(),
     'todo': TodoView(),
     'date': DateView(),
     'tags': TagView(),

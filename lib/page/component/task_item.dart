@@ -7,13 +7,49 @@ import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoism/widget/autocomplete.dart';
 
+enum TaskItemMode {
+  simple,
+  normal,
+  untilNow,
+}
+
 final currentTask = ScopedProvider<Task>(null);
 
 class TaskItem extends HookWidget {
-  const TaskItem({Key? key}) : super(key: key);
+  const TaskItem({Key? key, this.mode}) : super(key: key);
+
+  final TaskItemMode? mode;
 
   @override
   Widget build(BuildContext context) {
+    if (mode == TaskItemMode.simple) {
+      return simpelMode();
+    }
+    if (mode == TaskItemMode.untilNow) {
+      return untilNowMode();
+    }
+
+    return normalMode();
+  }
+
+  Widget simpelMode() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: Material(
+        elevation: 6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TitleComp(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget normalMode() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2.0),
       child: Material(
@@ -33,6 +69,64 @@ class TaskItem extends HookWidget {
       ),
     );
   }
+
+  Widget untilNowMode() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: Material(
+        elevation: 6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TitleComp(),
+              SizedBox(height: 10),
+              UntilNowComp(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class UntilNowComp extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final task = useProvider(currentTask);
+    final date = task.dayLists.elementAt(0).date;
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(date.difference(DateTime.now()).inDays.toString()),
+    );
+  }
+
+  // /// Returns a formatted string for the given Duration [d] to be DD:HH:mm:ss
+  // /// and ignore if 0.
+  // String formatDuration(Duration d) {
+  //   var seconds = d.inSeconds;
+  //   final days = seconds ~/ Duration.secondsPerDay;
+  //   seconds -= days * Duration.secondsPerDay;
+  //   final hours = seconds ~/ Duration.secondsPerHour;
+  //   seconds -= hours * Duration.secondsPerHour;
+  //   final minutes = seconds ~/ Duration.secondsPerMinute;
+  //   seconds -= minutes * Duration.secondsPerMinute;
+
+  //   final List<String> tokens = [];
+  //   if (days != 0) {
+  //     tokens.add('${days}d');
+  //   }
+  //   if (tokens.isNotEmpty || hours != 0) {
+  //     tokens.add('${hours}h');
+  //   }
+  //   if (tokens.isNotEmpty || minutes != 0) {
+  //     tokens.add('${minutes}m');
+  //   }
+  //   tokens.add('${seconds}s');
+
+  //   return tokens.join(':');
+  // }
 }
 
 class TitleComp extends HookWidget {

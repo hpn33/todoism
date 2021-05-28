@@ -36,7 +36,7 @@ class Task extends HiveObjectWrapper {
       hiveW.belongsTo(key, hiveW.taskTagRels, 'taskId');
 
   Iterable<DayList> get dayLists =>
-      taskDayListRels.joinTo(hiveW.dayLists, (e) => e.key, uniqe: true);
+      taskDayListRels.joinTo(hiveW.dayLists, (e) => e.listId, uniqe: true);
 
   Iterable<Tag> get tags => taskTagRels.joinTo(hiveW.tags, (e) => e.tagId);
 
