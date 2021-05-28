@@ -13,6 +13,11 @@
 
 ## views
 
+### dashboard
+- [ ] not compelete old tasks
+- [ ] today tasks
+- [ ] upcomming tasks - order by near task and remain time
+
 ### todos
 show all todos
 

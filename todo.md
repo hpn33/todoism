@@ -12,5 +12,7 @@
 - [ ] task float panel
 - [x] how many task on a tag
 - [ ] add task to day list
-- [x] date view: task not gone after delete task
-- [x] date view: task not showen after add
+- [x] fix: date view: task not gone after delete task
+- [x] fix: date view: task not showen after add
+- [ ] dashboard view: not complete old task, today tasks, upcomming tasks
+- [ ] tag color
