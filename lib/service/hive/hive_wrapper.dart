@@ -58,7 +58,7 @@ class HiveWrapper extends HostHiveWrapper {
     final taskId = await tasks.create(title, description);
 
     if (dateTime != null) {
-      await dayLists.setOnTask(dateTime, taskId: taskId);
+      await dayLists.submitTask(dateTime, taskId: taskId);
     }
 
     for (final tag in tagList) {

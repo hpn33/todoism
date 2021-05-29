@@ -18,4 +18,6 @@
 - [ ] tag color
 - [ ] fix: some time data change, somewhere else ui not refreshed
 - [x] improve dashboard ui
-- [ ] add exist task to day list
+- [x] add exist task to day list
+- [ ] delete task from day list
+- [ ] fix: render error about flex layout ( Expanded )

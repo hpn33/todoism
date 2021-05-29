@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 
 import 'component/add_task_item.dart';
+import 'component/dialog_task_panel.dart';
 import 'component/task_item.dart';
 
 class DateView extends HookWidget {
@@ -78,6 +79,28 @@ class DateView extends HookWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Material(
+                    elevation: 2,
+                    child: Row(
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  DialogTaskPanel(selectedDay.state),
+                            );
+
+                            context.refresh(tasksProvider);
+                          },
+                          child: Text('Add Task'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 AddTaskItem(
                   dateTime: selectedDay.state,
                   afterAdd: () {
@@ -85,26 +108,30 @@ class DateView extends HookWidget {
                   },
                 ),
                 Expanded(
-                  child: tasks.when(data: (_tasks) {
-                    return ListView.builder(
-                      itemCount: _tasks.length,
-                      itemBuilder: (context, index) {
-                        final task = _tasks[index];
+                  child: tasks.when(
+                    data: (_tasks) {
+                      return ListView.builder(
+                        itemCount: _tasks.length,
+                        itemBuilder: (context, index) {
+                          final task = _tasks[index];
 
-                        return ProviderScope(
-                          key: Key(task.title),
-                          overrides: [
-                            currentTask.overrideWithValue(task),
-                          ],
-                          child: TaskItem(key: Key(task.title)),
-                        );
-                      },
-                    );
-                  }, loading: () {
-                    return Center(child: CircularProgressIndicator());
-                  }, error: (o, s) {
-                    return Center(child: Text('$o\n$s'));
-                  }),
+                          return ProviderScope(
+                            key: Key(task.title),
+                            overrides: [
+                              currentTask.overrideWithValue(task),
+                            ],
+                            child: TaskItem(key: Key(task.title)),
+                          );
+                        },
+                      );
+                    },
+                    loading: () {
+                      return Center(child: CircularProgressIndicator());
+                    },
+                    error: (o, s) {
+                      return Center(child: Text('$o\n$s'));
+                    },
+                  ),
                 ),
               ],
             ),

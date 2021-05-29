@@ -42,7 +42,7 @@ class BoxDayLists extends BoxWrapper<DayList> {
     return (all.toList()..sort((a, b) => b.date.compareTo(a.date)));
   }
 
-  Future<void> setOnTask(
+  Future<void> submitTask(
     DateTime dateTime, {
     required int taskId,
   }) async {
