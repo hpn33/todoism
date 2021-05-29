@@ -17,3 +17,5 @@
 - [x] dashboard view: not complete old task, today tasks, upcomming tasks
 - [ ] tag color
 - [ ] fix: some time data change, somewhere else ui not refreshed
+- [x] improve dashboard ui
+- [ ] add exist task to day list
