@@ -20,4 +20,5 @@
 - [x] improve dashboard ui
 - [x] add exist task to day list
 - [ ] delete task from day list
-- [ ] fix: render error about flex layout ( Expanded )
+- [ ] refactor task item
+- [x] fix: render error about flex layout ( Expanded )

@@ -11,16 +11,14 @@ import 'package:todoism/service/hive/type/day_list_type.dart';
 class DashboardView extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Expanded(child: oldTasks()),
-          Container(width: 1, height: 300, color: Colors.grey),
-          Expanded(child: todayTasks()),
-          Container(width: 1, height: 300, color: Colors.grey),
-          Expanded(child: commingTasks()),
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(child: oldTasks()),
+        Container(width: 1, height: 300, color: Colors.grey),
+        Expanded(child: todayTasks()),
+        Container(width: 1, height: 300, color: Colors.grey),
+        Expanded(child: commingTasks()),
+      ],
     );
   }
 
