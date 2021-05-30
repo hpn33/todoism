@@ -22,3 +22,5 @@
 - [ ] delete task from day list
 - [ ] refactor task item
 - [x] fix: render error about flex layout ( Expanded )
+- [ ] task panel
+- [ ] fix: error on not exist day list
