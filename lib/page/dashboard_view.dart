@@ -23,11 +23,9 @@ class DashboardView extends HookWidget {
   }
 
   Widget oldTasks() {
-    final dayLists = hiveW.dayLists.all
-        .where((element) =>
-            element.date.isBefore(DateTime.now().add(Duration(days: -1))))
-        .toList()
-          ..sort((a, b) => b.date.compareTo(a.date));
+    final dayLists = hiveW.dayLists.before(
+      DateTime.now().add(Duration(days: -1)),
+    );
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -125,10 +123,7 @@ class DashboardView extends HookWidget {
   }
 
   Widget commingTasks() {
-    final dayLists = hiveW.dayLists.all
-        .where((element) => element.date.isAfter(DateTime.now()))
-        .toList()
-          ..sort((a, b) => a.date.compareTo(b.date));
+    final dayLists = hiveW.dayLists.after(DateTime.now());
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -142,7 +137,7 @@ class DashboardView extends HookWidget {
               child: ListView.builder(
                 itemCount: dayLists.length,
                 itemBuilder: (context, index) {
-                  final dayList = dayLists.elementAt(index);
+                  final dayList = dayLists[index];
                   final tasks = dayList.tasks;
 
                   return Column(

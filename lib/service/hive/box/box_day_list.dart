@@ -22,14 +22,20 @@ class BoxDayLists extends BoxWrapper<DayList> {
     return where((element) => element.key == id).first;
   }
 
-  // Iterable<DayList> sorted() {
-  //   return (all.toList()..sort((a, b) => b.date.compareTo(a.date)));
-  // }
-
   Future<void> submitTask(
     DateTime dateTime, {
     required int taskId,
   }) async {
     ofDay(dateTime).submitTask(taskId);
+  }
+
+  List<DayList> after(DateTime dateTime) {
+    return where((element) => element.date.isAfter(dateTime)).toList()
+      ..sort((a, b) => a.date.compareTo(b.date));
+  }
+
+  List<DayList> before(DateTime date) {
+    return where((element) => element.date.isBefore(date)).toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
   }
 }
