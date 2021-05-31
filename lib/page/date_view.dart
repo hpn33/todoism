@@ -5,6 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
+import 'package:todoism/widget/provide_future_list.dart';
 
 import 'component/add_task_item.dart';
 import 'component/dialog_task_panel.dart';
@@ -106,28 +107,16 @@ class DateView extends HookWidget {
                   },
                 ),
                 Expanded(
-                  child: tasks.when(
-                    data: (_tasks) {
-                      return ListView.builder(
-                        itemCount: _tasks.length,
-                        itemBuilder: (context, index) {
-                          final task = _tasks[index];
-
-                          return ProviderScope(
-                            key: Key(task.title),
-                            overrides: [
-                              currentTask.overrideWithValue(task),
-                            ],
-                            child: TaskItem(key: Key(task.title)),
-                          );
-                        },
+                  child: ProvideFutureList<Task>(
+                    futureProvider: tasks,
+                    itemBuilder: (context, task) {
+                      return ProviderScope(
+                        key: Key(task.title),
+                        overrides: [
+                          currentTask.overrideWithValue(task),
+                        ],
+                        child: TaskItem(key: Key(task.title)),
                       );
-                    },
-                    loading: () {
-                      return Center(child: CircularProgressIndicator());
-                    },
-                    error: (o, s) {
-                      return Center(child: Text('$o\n$s'));
                     },
                   ),
                 ),
