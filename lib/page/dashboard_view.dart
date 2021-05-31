@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/page/component/add_task_item.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todoism/service/hive/type/task_type.dart';
 
 import 'component/task_item.dart';
 import 'package:todoism/service/hive/type/day_list_type.dart';
@@ -80,15 +79,7 @@ class DashboardView extends HookWidget {
   Widget todayTasks() {
     return HookBuilder(
       builder: (BuildContext context) {
-        final tasks = () {
-          final dayList = hiveW.dayLists.ofDay(DateTime.now());
-
-          if (dayList == null) {
-            return <Task>[];
-          }
-
-          return dayList.tasks;
-        }();
+        final tasks = hiveW.dayLists.ofDay(DateTime.now()).tasks;
 
         useListenable(hiveW.taskDayListRels.box.listenable());
         useListenable(hiveW.tasks.box.listenable());

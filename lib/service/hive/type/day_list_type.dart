@@ -17,4 +17,8 @@ class DayList extends HiveObjectWrapper {
 
   Iterable<Task> get tasks =>
       taskDayListRels.joinTo(hiveW.tasks, (e) => e.taskId);
+
+  Future<void> submitTask(int taskId) async {
+    hiveW.taskDayListRels.submit(taskId, key);
+  }
 }

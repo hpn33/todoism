@@ -40,4 +40,8 @@ class Tag extends HiveObjectWrapper {
       hiveW.belongsTo(key, hiveW.taskTagRels, 'tagId');
 
   Iterable<Task> get tasks => taskTagRels.joinTo(hiveW.tasks, (e) => e.taskId);
+
+  Future<void> setOnTask(int taskId) async {
+    hiveW.taskTagRels.submit(taskId, key);
+  }
 }

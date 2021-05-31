@@ -67,7 +67,7 @@ class HiveWrapper extends HostHiveWrapper {
         continue;
       }
 
-      await hiveW.taskTagRels.submit(taskId, tag.key);
+      await tag.setOnTask(taskId);
     }
   }
 }

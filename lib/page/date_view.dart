@@ -15,8 +15,12 @@ class DateView extends HookWidget {
   final tasksProvider = FutureProvider<List<Task>>((ref) async {
     final selectedDay = ref.watch(selectedDayP);
 
-    final dayList = hiveW.dayLists.ofDay(selectedDay.state);
-    return dayList != null ? dayList.tasks.toList().reversed.toList() : [];
+    return hiveW.dayLists
+        .ofDay(selectedDay.state)
+        .tasks
+        .toList()
+        .reversed
+        .toList();
   });
 
   @override
@@ -60,13 +64,7 @@ class DateView extends HookWidget {
                     focusedDay.value = _focusedDay;
                   },
                   eventLoader: (datetime) {
-                    final daylist = hiveW.dayLists.ofDay(datetime);
-
-                    if (daylist == null) {
-                      return [];
-                    }
-
-                    return daylist.tasks.toList();
+                    return hiveW.dayLists.ofDay(datetime).tasks.toList();
                   },
                 ),
               ),
