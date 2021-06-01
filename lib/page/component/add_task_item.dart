@@ -26,7 +26,7 @@ class AddTaskItem extends HookWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 80,
+                width: 50,
                 child: Center(child: Text('Add')),
               ),
               Expanded(

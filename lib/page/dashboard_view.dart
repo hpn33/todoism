@@ -12,14 +12,24 @@ import 'package:todoism/service/hive/type/day_list_type.dart';
 class DashboardView extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(child: oldTasks()),
-        Container(width: 1, height: 300, color: Colors.grey),
-        Expanded(child: todayTasks()),
-        Container(width: 1, height: 300, color: Colors.grey),
-        Expanded(child: commingTasks()),
-      ],
+    return Container(
+      color: Colors.grey[300],
+      child: Column(
+        children: [
+          StatusCard(),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(child: oldTasks()),
+                Container(width: 1, height: 300, color: Colors.grey),
+                Expanded(child: todayTasks()),
+                Container(width: 1, height: 300, color: Colors.grey),
+                Expanded(child: commingTasks()),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -163,28 +173,75 @@ class DashboardView extends HookWidget {
   }
 
   Padding header(DayList dayList, MaterialColor color) {
+    final diff =
+        ((dayList.date.difference(DateTime.now()).inHours / 24.0) + 0.5)
+            .round();
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.only(top: 16),
       child: Material(
+        color: color,
         elevation: 2,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(DateFormat.yMd().format(dayList.date)),
-                  Text(
-                    (dayList.date.difference(DateTime.now()).inDays).toString(),
-                  ),
-                ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                DateFormat.yMd().format(dayList.date),
+                style: TextStyle(color: Colors.white),
               ),
-            ),
-            Container(color: color, height: 10),
+              if (diff != 0)
+                Text(
+                  diff.toInt().toString(),
+                  style: TextStyle(color: Colors.white),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StatusCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final tasks = hiveW.tasks.all;
+    final done = tasks.where((element) => element.state == true);
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            item('All', tasks.length, Colors.blue),
+            item('Done', done.length, Colors.green),
+            item('Not', tasks.length - done.length, Colors.red),
           ],
         ),
       ),
+    );
+  }
+
+  Widget item(String text, int number, Color color) {
+    return Row(
+      children: [
+        Text(text),
+        SizedBox(width: 5),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: color,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+          child: Text(
+            number.toString(),
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
     );
   }
 }
