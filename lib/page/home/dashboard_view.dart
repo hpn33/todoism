@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todoism/page/component/add_task_item.dart';
+import 'package:todoism/page/home/component/add_task_item.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
