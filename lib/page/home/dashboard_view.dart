@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todoism/page/home/component/add_task_item.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todoism/widget/styled_box.dart';
 
 import 'component/task_item.dart';
 import 'package:todoism/service/hive/type/day_list_type.dart';
@@ -21,9 +22,7 @@ class DashboardView extends HookWidget {
             child: Row(
               children: [
                 Expanded(child: oldTasks()),
-                Container(width: 1, height: 300, color: Colors.grey),
                 Expanded(child: todayTasks()),
-                Container(width: 1, height: 300, color: Colors.grey),
                 Expanded(child: commingTasks()),
               ],
             ),
@@ -34,54 +33,56 @@ class DashboardView extends HookWidget {
   }
 
   Widget oldTasks() {
-    final dayLists = hiveW.dayLists.before(
-      DateTime.now().add(Duration(days: -1)),
-    );
+    return HookBuilder(
+      builder: (BuildContext context) {
+        final dayLists = hiveW.dayLists.before(
+          DateTime.now().add(Duration(days: -1)),
+        );
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text('Old - Not Complete'),
-          Divider(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                itemCount: dayLists.length,
-                itemBuilder: (context, index) {
-                  final dayList = dayLists.elementAt(index);
-                  final tasks =
-                      dayList.tasks.where((element) => element.state == false);
+        useListenable(hiveW.taskDayListRels.box.listenable());
+        useListenable(hiveW.tasks.box.listenable());
 
-                  if (tasks.isEmpty) {
-                    return SizedBox();
-                  }
+        return StyledBox(
+          title: 'Old - Not Complete',
+          isList: true,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+              itemCount: dayLists.length,
+              itemBuilder: (context, index) {
+                final dayList = dayLists.elementAt(index);
+                final tasks =
+                    dayList.tasks.where((element) => element.state == false);
 
-                  return Column(
-                    children: [
-                      header(dayList, Colors.blueGrey),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: tasks.length,
-                        itemBuilder: (context, index) {
-                          return ProviderScope(
-                            overrides: [
-                              currentTask
-                                  .overrideWithValue(tasks.elementAt(index)),
-                            ],
-                            child: TaskItem(mode: TaskItemMode.simple),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
+                if (tasks.isEmpty) {
+                  return SizedBox();
+                }
+
+                return Column(
+                  children: [
+                    header(dayList, Colors.blueGrey),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        final task = tasks.elementAt(index);
+
+                        return ProviderScope(
+                          key: Key(task.key.toString()),
+                          overrides: [
+                            currentTask.overrideWithValue(task),
+                          ],
+                          child: TaskItem(mode: TaskItemMode.simple),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -94,29 +95,35 @@ class DashboardView extends HookWidget {
         useListenable(hiveW.taskDayListRels.box.listenable());
         useListenable(hiveW.tasks.box.listenable());
 
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              AddTaskItem(
-                dateTime: DateTime.now(),
-                afterAdd: () {},
-              ),
-              header(daylist, Colors.purple),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: tasks.length,
-                  itemBuilder: (context, index) {
-                    return ProviderScope(
-                      overrides: [
-                        currentTask.overrideWithValue(tasks.elementAt(index)),
-                      ],
-                      child: TaskItem(mode: TaskItemMode.simple),
-                    );
-                  },
+        return StyledBox(
+          isList: true,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                AddTaskItem(
+                  dateTime: DateTime.now(),
+                  afterAdd: () {},
                 ),
-              ),
-            ],
+                header(daylist, Colors.purple),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      final task = tasks.elementAt(index);
+
+                      return ProviderScope(
+                        key: Key(task.key.toString()),
+                        overrides: [
+                          currentTask.overrideWithValue(task),
+                        ],
+                        child: TaskItem(mode: TaskItemMode.simple),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -124,51 +131,53 @@ class DashboardView extends HookWidget {
   }
 
   Widget commingTasks() {
-    final dayLists = hiveW.dayLists.after(DateTime.now());
+    return HookBuilder(
+      builder: (BuildContext context) {
+        final dayLists = hiveW.dayLists.after(DateTime.now());
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text('Comming'),
-          Divider(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                itemCount: dayLists.length,
-                itemBuilder: (context, index) {
-                  final dayList = dayLists[index];
-                  final tasks = dayList.tasks;
+        useListenable(hiveW.taskDayListRels.box.listenable());
+        useListenable(hiveW.tasks.box.listenable());
 
-                  if (tasks.isEmpty) {
-                    return SizedBox();
-                  }
+        return StyledBox(
+          title: 'Comming',
+          isList: true,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.builder(
+              itemCount: dayLists.length,
+              itemBuilder: (context, index) {
+                final dayList = dayLists[index];
+                final tasks = dayList.tasks;
 
-                  return Column(
-                    children: [
-                      header(dayList, Colors.blue),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: tasks.length,
-                        itemBuilder: (context, index) {
-                          return ProviderScope(
-                            overrides: [
-                              currentTask
-                                  .overrideWithValue(tasks.elementAt(index)),
-                            ],
-                            child: TaskItem(mode: TaskItemMode.simple),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
+                if (tasks.isEmpty) {
+                  return SizedBox();
+                }
+
+                return Column(
+                  children: [
+                    header(dayList, Colors.blue),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        final task = tasks.elementAt(index);
+
+                        return ProviderScope(
+                          key: Key(task.key.toString()),
+                          overrides: [
+                            currentTask.overrideWithValue(task),
+                          ],
+                          child: TaskItem(mode: TaskItemMode.simple),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -204,11 +213,13 @@ class DashboardView extends HookWidget {
   }
 }
 
-class StatusCard extends StatelessWidget {
+class StatusCard extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final tasks = hiveW.tasks.all;
     final done = tasks.where((element) => element.state == true);
+
+    useListenable(hiveW.tasks.box.listenable());
 
     return Card(
       child: Padding(

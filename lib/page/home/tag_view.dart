@@ -4,6 +4,7 @@ import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/tag_type.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
+import 'package:todoism/widget/styled_box.dart';
 
 class TagView extends HookWidget {
   @override
@@ -12,9 +13,44 @@ class TagView extends HookWidget {
 
     useListenable(hiveW.tags.box.listenable());
 
-    return ListView.builder(
-      itemCount: tags.length,
-      itemBuilder: (context, index) => item(tags.elementAt(index)),
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              StyledBox(
+                title: 'tags',
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      for (final tag in tags) Text(tag.title),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: StyledBox(
+            title: 'With detail',
+            isList: true,
+            child: ListView.builder(
+              itemCount: tags.length,
+              itemBuilder: (context, index) => item(tags.elementAt(index)),
+            ),
+          ),
+        ),
+        // Expanded(
+        //   flex: 3,
+        //   child: ListView.builder(
+        //     itemCount: tags.length,
+        //     itemBuilder: (context, index) => item(tags.elementAt(index)),
+        //   ),
+        // ),
+      ],
     );
   }
 

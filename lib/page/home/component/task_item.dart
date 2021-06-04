@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todoism/page/task/task_page.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/tag_type.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
@@ -10,7 +11,6 @@ import 'package:todoism/widget/autocomplete.dart';
 enum TaskItemMode {
   simple,
   normal,
-  untilNow,
 }
 
 final currentTask = ScopedProvider<Task>(null);
@@ -22,70 +22,55 @@ class TaskItem extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2.0),
+      child: Material(
+        elevation: 6,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: getMode(context),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getMode(BuildContext context) {
     if (mode == TaskItemMode.simple) {
-      return simpelMode();
-    }
-    if (mode == TaskItemMode.untilNow) {
-      return untilNowMode();
+      return simpelMode(context);
     }
 
-    return normalMode();
+    return normalMode(context);
   }
 
-  Widget simpelMode() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0),
-      child: Material(
-        elevation: 6,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TitleComp(),
-            ],
-          ),
-        ),
-      ),
-    );
+  List<Widget> simpelMode(BuildContext context) {
+    return [
+      toTaskPage(context),
+      TitleComp(),
+    ];
   }
 
-  Widget normalMode() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0),
-      child: Material(
-        elevation: 6,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TitleComp(),
-              SizedBox(height: 10),
-              DescriptionComp(),
-              SizedBox(height: 10),
-              TagComp(),
-            ],
-          ),
-        ),
-      ),
-    );
+  List<Widget> normalMode(BuildContext context) {
+    return [
+      toTaskPage(context),
+      TitleComp(),
+      SizedBox(height: 10),
+      DescriptionComp(),
+      SizedBox(height: 10),
+      TagComp(),
+    ];
   }
 
-  Widget untilNowMode() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0),
-      child: Material(
-        elevation: 6,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TitleComp(),
-              SizedBox(height: 10),
-              UntilNowComp(),
-            ],
-          ),
-        ),
-      ),
+  Widget toTaskPage(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TaskPage()),
+        );
+      },
+      child: Text('detail'),
     );
   }
 }

@@ -18,7 +18,7 @@ class AddTaskItem extends HookWidget {
     final textFieldFocusNode = useFocusNode();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 36.0),
+      padding: const EdgeInsets.only(bottom: 18.0),
       child: Material(
         elevation: 4,
         child: Padding(
