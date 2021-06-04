@@ -65,6 +65,7 @@ class TaskItem extends HookWidget {
   Widget toTaskPage(BuildContext context) {
     return TextButton(
       onPressed: () {
+        context.read(TaskPage.selectedTask).state = context.read(currentTask);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => TaskPage()),
@@ -73,45 +74,6 @@ class TaskItem extends HookWidget {
       child: Text('detail'),
     );
   }
-}
-
-class UntilNowComp extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final task = useProvider(currentTask);
-    final date = task.dayLists.elementAt(0).date;
-
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(date.difference(DateTime.now()).inDays.toString()),
-    );
-  }
-
-  // /// Returns a formatted string for the given Duration [d] to be DD:HH:mm:ss
-  // /// and ignore if 0.
-  // String formatDuration(Duration d) {
-  //   var seconds = d.inSeconds;
-  //   final days = seconds ~/ Duration.secondsPerDay;
-  //   seconds -= days * Duration.secondsPerDay;
-  //   final hours = seconds ~/ Duration.secondsPerHour;
-  //   seconds -= hours * Duration.secondsPerHour;
-  //   final minutes = seconds ~/ Duration.secondsPerMinute;
-  //   seconds -= minutes * Duration.secondsPerMinute;
-
-  //   final List<String> tokens = [];
-  //   if (days != 0) {
-  //     tokens.add('${days}d');
-  //   }
-  //   if (tokens.isNotEmpty || hours != 0) {
-  //     tokens.add('${hours}h');
-  //   }
-  //   if (tokens.isNotEmpty || minutes != 0) {
-  //     tokens.add('${minutes}m');
-  //   }
-  //   tokens.add('${seconds}s');
-
-  //   return tokens.join(':');
-  // }
 }
 
 class TitleComp extends HookWidget {
