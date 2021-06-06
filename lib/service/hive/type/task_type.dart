@@ -48,4 +48,8 @@ class Task extends HiveObjectWrapper {
 
     hiveW.taskTagRels.submit(key, tag.key);
   }
+
+  Future<void> addToDayList(DateTime dateTime) async {
+    hiveW.dayLists.submitTask(dateTime, taskId: key);
+  }
 }
