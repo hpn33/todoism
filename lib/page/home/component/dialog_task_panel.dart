@@ -6,15 +6,19 @@ import 'package:todoism/service/hive/type/task_type.dart';
 
 class DialogTaskPanel extends HookWidget {
   final searchP = StateProvider((ref) => '');
+  final uncompleteTasks = Provider(
+    (ref) => hiveW.tasks.where((element) => element.state == false),
+  );
   late final FutureProvider<Iterable<Task>> tasksProvider =
       FutureProvider<Iterable<Task>>((ref) async {
     final search = ref.watch(searchP).state;
+    final tasks = ref.read(uncompleteTasks);
 
     if (search.isEmpty) {
-      return hiveW.tasks.all;
+      return tasks;
     }
 
-    return hiveW.tasks.where((element) => element.title.contains(search));
+    return tasks.where((element) => element.title.contains(search));
   });
 
   final DateTime selectedDay;
@@ -28,53 +32,56 @@ class DialogTaskPanel extends HookWidget {
     final controller = useTextEditingController();
 
     return Dialog(
-      child: Column(
-        children: [
-          TextField(
-            controller: controller,
-            onChanged: (v) {
-              context.read(searchP).state = v;
-            },
-            focusNode: FocusNode()..requestFocus(),
-          ),
-          Expanded(
-            child: tasks.when(
-              data: (_tasks) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _tasks.length,
-                  itemBuilder: (context, index) {
-                    final task = _tasks.elementAt(index);
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: controller,
+              onChanged: (v) {
+                context.read(searchP).state = v;
+              },
+              focusNode: FocusNode()..requestFocus(),
+            ),
+            Expanded(
+              child: tasks.when(
+                data: (_tasks) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _tasks.length,
+                    itemBuilder: (context, index) {
+                      final task = _tasks.elementAt(index);
 
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Material(
-                        elevation: 2,
-                        child: InkWell(
-                          onTap: () async {
-                            await hiveW.dayLists
-                                .submitTask(selectedDay, taskId: task.key);
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(task.title),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Material(
+                          elevation: 2,
+                          child: InkWell(
+                            onTap: () async {
+                              await hiveW.dayLists
+                                  .submitTask(selectedDay, taskId: task.key);
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(task.title),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-              loading: () {
-                return Center(child: CircularProgressIndicator());
-              },
-              error: (o, s) {
-                return Center(child: Text('$o\n$s'));
-              },
+                      );
+                    },
+                  );
+                },
+                loading: () {
+                  return Center(child: CircularProgressIndicator());
+                },
+                error: (o, s) {
+                  return Center(child: Text('$o\n$s'));
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

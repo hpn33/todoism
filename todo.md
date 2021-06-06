@@ -23,4 +23,4 @@
 - [x] fix: error on not exist day list
 - [ ] expriment: dock ui
 - [ ] edit relations from task page
-- [ ] 
+- [x] date view: show undone tasks on panel of add task to day list
