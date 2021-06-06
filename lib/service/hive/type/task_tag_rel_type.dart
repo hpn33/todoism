@@ -15,16 +15,7 @@ class TaskTagRel extends HiveObjectWrapper {
   @HiveField(1)
   late int tagId;
 
-  getField(name) {
-    if (name == 'taskId') {
-      return taskId;
-    }
-    if (name == 'tagId') {
-      return tagId;
-    }
-  }
+  Task? get task => hasOne(hiveW.tasks);
 
-  Task? get task => hiveW.hasOne(hiveW.tasks, taskId);
-
-  Tag? get tag => hiveW.hasOne(hiveW.tags, tagId);
+  Tag? get tag => hasOne(hiveW.tags);
 }

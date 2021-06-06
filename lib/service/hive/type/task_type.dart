@@ -30,10 +30,10 @@ class Task extends HiveObjectWrapper {
   }
 
   Iterable<TaskDayListRel> get taskDayListRels =>
-      hiveW.belongsTo(key, hiveW.taskDayListRels, 'taskId');
+      belongsTo(hiveW.taskDayListRels, getForeignKey: (e) => e.taskId);
 
   Iterable<TaskTagRel> get taskTagRels =>
-      hiveW.belongsTo(key, hiveW.taskTagRels, 'taskId');
+      belongsTo(hiveW.taskTagRels, getForeignKey: (e) => e.taskId);
 
   Iterable<DayList> get dayLists =>
       taskDayListRels.joinTo(hiveW.dayLists, (e) => e.listId, uniqe: true);

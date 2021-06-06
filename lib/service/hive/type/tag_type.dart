@@ -19,12 +19,6 @@ class Tag extends HiveObjectWrapper {
   @HiveField(2)
   String? description;
 
-  getField(String name) {
-    if (name == 'parentId') {
-      return parentId;
-    }
-  }
-
   @override
   Future<void> delete() {
     taskTagRels.forEach((rel) => rel.delete());
@@ -32,12 +26,13 @@ class Tag extends HiveObjectWrapper {
     return super.delete();
   }
 
-  Tag? get parentTag => hiveW.hasOne(hiveW.tags, parentId);
+  Tag? get parentTag => hasOne(hiveW.tags, ownerKey: parentId);
 
-  Iterable<Tag> get subTags => hiveW.belongsTo(key, hiveW.tags, 'parentId');
+  Iterable<Tag> get subTags =>
+      belongsTo(hiveW.tags, getForeignKey: (e) => e.parentId);
 
   Iterable<TaskTagRel> get taskTagRels =>
-      hiveW.belongsTo(key, hiveW.taskTagRels, 'tagId');
+      belongsTo(hiveW.taskTagRels, getForeignKey: (e) => e.tagId);
 
   Iterable<Task> get tasks => taskTagRels.joinTo(hiveW.tasks, (e) => e.taskId);
 

@@ -15,16 +15,7 @@ class TaskDayListRel extends HiveObjectWrapper {
   @HiveField(1)
   late int taskId;
 
-  getField(name) {
-    if (name == 'listId') {
-      return listId;
-    }
-    if (name == 'taskId') {
-      return taskId;
-    }
-  }
+  DayList? get dayList => hasOne(hiveW.dayLists, ownerKey: listId);
 
-  DayList? get dayList => hiveW.hasOne(hiveW.dayLists, listId);
-
-  Task? get task => hiveW.hasOne(hiveW.tasks, taskId);
+  Task? get task => hasOne(hiveW.tasks, ownerKey: taskId);
 }

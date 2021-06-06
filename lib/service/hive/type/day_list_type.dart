@@ -13,7 +13,7 @@ class DayList extends HiveObjectWrapper {
   late DateTime date;
 
   Iterable<TaskDayListRel> get taskDayListRels =>
-      hiveW.belongsTo(key, hiveW.taskDayListRels, 'listId');
+      belongsTo(hiveW.taskDayListRels, getForeignKey: (e) => e.listId);
 
   Iterable<Task> get tasks =>
       taskDayListRels.joinTo(hiveW.tasks, (e) => e.taskId);
