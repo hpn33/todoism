@@ -14,9 +14,9 @@
 ## views
 
 ### dashboard
-- [ ] not compelete old tasks
-- [ ] today tasks
-- [ ] upcomming tasks - order by near task and remain time
+- [x] not compelete old tasks
+- [x] today tasks
+- [x] upcomming tasks - order by near task and remain time
 
 ### todos
 show all todos
@@ -29,7 +29,7 @@ show all todos
 filter by day date
 
 - [x] add task to day list
-- [ ] add exist task to day list
+- [x] add exist task to day list
 - [ ] delete task from day lsit
 - [ ] 
 
