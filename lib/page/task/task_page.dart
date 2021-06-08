@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:todoism/widget/main_frame.dart';
-import 'package:todoism/widget/styled_box.dart';
 
 import 'comp/daylist_comp.dart';
 import 'comp/descript_comp.dart';
@@ -38,12 +37,9 @@ class TaskPage extends HookWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: TitleComp(),
                   ),
-                  StyledBox(
-                    title: 'detail',
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DescriptionComp(),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DescriptionComp(),
                   ),
                   DayListComp(),
                 ],

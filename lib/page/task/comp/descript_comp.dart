@@ -14,50 +14,79 @@ class DescriptionComp extends HookWidget {
     final textEditingController = useTextEditingController();
     final textFieldFocusNode = useFocusNode();
 
+    final editMode = useState(false);
+
     return Focus(
       focusNode: itemFocus,
       onFocusChange: (focused) {
         if (focused) {
-          textEditingController.text = task.description;
+          if (!editMode.value) {
+            textEditingController.text = task.description;
+          }
         } else {
-          if (task.description != textEditingController.text) {
-            task.description = textEditingController.text;
-            task.save();
+          if (task.description == textEditingController.text) {
+            editMode.value = false;
           }
         }
       },
-      child: GestureDetector(
-        onTap: () {
-          itemFocus.requestFocus();
-          textFieldFocusNode.requestFocus();
-        },
-        child: itemFocus.hasFocus
-            ? Stack(
-                children: [
-                  TextField(
-                    autofocus: true,
-                    focusNode: textFieldFocusNode,
-                    controller: textEditingController,
-                    minLines: 1,
-                    maxLines: 10,
-                  ),
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: IconButton(
-                      icon: Icon(Icons.done),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
-                  ),
-                ],
-              )
-            : task.description.length > 0
-                ? Text(task.description)
-                : InkWell(
-                    child: Icon(Icons.add, size: 18),
-                  ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // content
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                editMode.value = true;
+                itemFocus.requestFocus();
+                textFieldFocusNode.requestFocus();
+              },
+              child: Container(
+                padding: (editMode.value ||
+                        itemFocus.hasFocus ||
+                        task.description.length > 0)
+                    ? const EdgeInsets.all(8)
+                    : null,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: editMode.value
+                    ? Stack(
+                        children: [
+                          TextField(
+                            autofocus: true,
+                            focusNode: textFieldFocusNode,
+                            controller: textEditingController,
+                            minLines: 3,
+                            maxLines: 10,
+                          ),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: IconButton(
+                              icon: Icon(Icons.done),
+                              onPressed: () {
+                                if (task.description !=
+                                    textEditingController.text) {
+                                  task
+                                    ..description = textEditingController.text
+                                    ..save();
+                                }
+
+                                editMode.value = false;
+                                FocusScope.of(context).unfocus();
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                    : task.description.length > 0
+                        ? Text(task.description)
+                        : Icon(Icons.add, size: 18),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
