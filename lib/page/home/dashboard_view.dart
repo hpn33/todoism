@@ -182,10 +182,6 @@ class DashboardView extends HookWidget {
   }
 
   Padding header(DayList dayList, MaterialColor color) {
-    final diff =
-        ((dayList.date.difference(DateTime.now()).inHours / 24.0) + 0.5)
-            .round();
-
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Material(
@@ -200,11 +196,14 @@ class DashboardView extends HookWidget {
                 DateFormat.yMd().format(dayList.date),
                 style: TextStyle(color: Colors.white),
               ),
-              if (diff != 0)
-                Text(
-                  diff.toInt().toString(),
-                  style: TextStyle(color: Colors.white),
-                ),
+              Text(
+                [
+                  if (dayList.diff.sign == -1) '${dayList.diffForHuman} ',
+                  '(${dayList.diff})',
+                  if (dayList.diff.sign == 1) ' day',
+                ].join(),
+                style: TextStyle(color: Colors.white),
+              ),
             ],
           ),
         ),

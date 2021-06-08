@@ -12,74 +12,84 @@ class DayListComp extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final task = useProvider(TaskPage.selectedTask).state;
-    final dayLists = task.dayLists;
+    final dayLists = task.dayLists.toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
 
     useListenable(hiveW.taskDayListRels.box.listenable());
 
     return StyledBox(
       title: 'dayList',
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          Expanded(
-            child: Column(
-              children: (dayLists.toList()
-                    ..sort(
-                      (a, b) => a.date.compareTo(b.date),
-                    ))
-                  .map(
-                (dayList) {
-                  final diff =
-                      ((dayList.date.difference(DateTime.now()).inHours /
-                                  24.0) +
-                              0.5)
-                          .round();
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                        'Old (${dayLists.last.diff}) ${dayLists.last.diffForHuman}'),
+                    SizedBox(width: 15),
+                    Text(
+                        'Last (${dayLists.first.diff}) ${dayLists.first.diffForHuman}'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () async {
+                        final pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now().add(Duration(days: -365)),
+                          lastDate: DateTime.now().add(Duration(days: 365)),
+                        );
 
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: () => dayList.delete(),
-                        ),
-                        SizedBox(width: 10),
-                        Text(dayList.date.toString()),
-                        SizedBox(width: 10),
-                        Text(diff.toString()),
-                      ],
+                        if (pickedDate == null) {
+                          return;
+                        }
+
+                        await task.addToDayList(pickedDate);
+                      },
                     ),
-                  );
-                },
-              ).toList(),
+                    TextButton(
+                      child: Text('Add To Today'),
+                      onPressed: () {
+                        task.addToDayList(DateTime.now());
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          Column(
-            children: [
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
-                  final pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime.now().add(Duration(days: -365)),
-                    lastDate: DateTime.now().add(Duration(days: 365)),
-                  );
+          SizedBox(
+            height: 300,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: dayLists.length,
+              itemBuilder: (context, index) {
+                final dayList = dayLists[index];
 
-                  if (pickedDate == null) {
-                    return;
-                  }
-
-                  await task.addToDayList(pickedDate);
-                },
-              ),
-              TextButton(
-                child: Text('today'),
-                onPressed: () {
-                  task.addToDayList(DateTime.now());
-                },
-              ),
-            ],
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () => dayList.delete(),
+                      ),
+                      SizedBox(width: 10),
+                      Text(dayList.date.toString()),
+                      SizedBox(width: 10),
+                      Text(dayList.diff.toString()),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

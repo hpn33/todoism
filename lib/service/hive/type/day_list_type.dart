@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:hive_wrapper/hive_wrapper.dart';
+import 'package:todoism/util/time_formatter.dart';
 
 import '../hive_wrapper.dart';
 import 'task_day_list_rel_type.dart';
@@ -27,4 +28,8 @@ class DayList extends HiveObjectWrapper {
 
     hiveW.taskDayListRels.submit(taskId, key);
   }
+
+  int get diff => (date.difference(DateTime.now()).inHours / 24).round();
+
+  String get diffForHuman => formatTime(date.millisecondsSinceEpoch);
 }

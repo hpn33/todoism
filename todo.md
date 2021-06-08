@@ -24,3 +24,4 @@
 - [ ] expriment: dock ui
 - [ ] edit relations from task page
 - [x] date view: show undone tasks on panel of add task to day list
+- [ ] task page: improve dayList comp ui
