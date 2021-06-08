@@ -16,16 +16,17 @@ class TitleComp extends HookWidget {
     final textEditingController = useTextEditingController();
     final textFieldFocusNode = useFocusNode();
 
+    final editMode = useState(false);
+
     return Focus(
       focusNode: itemFocus,
       onFocusChange: (focused) {
         if (focused) {
-          textEditingController.text = task.title;
-        } else {
-          if (task.title != textEditingController.text) {
-            task.title = textEditingController.text;
-            task.save();
-          }
+          return;
+        }
+
+        if (task.title == textEditingController.text) {
+          editMode.value = false;
         }
       },
       child: Row(
@@ -38,14 +39,16 @@ class TitleComp extends HookWidget {
                   icon: Icon(Icons.delete),
                   onPressed: () {
                     task.delete();
+                    Navigator.pop(context);
                   },
                 ),
                 Checkbox(
                   // tristate: task.state == null ? true : false,
                   value: task.state == null ? false : task.state,
                   onChanged: (v) {
-                    task.state = v;
-                    task.save();
+                    task
+                      ..state = v
+                      ..save();
 
                     state.value = task.state!;
                   },
@@ -56,10 +59,16 @@ class TitleComp extends HookWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                if (editMode.value) {
+                  return;
+                }
+
+                textEditingController.text = task.title;
+                editMode.value = true;
                 itemFocus.requestFocus();
                 textFieldFocusNode.requestFocus();
               },
-              child: itemFocus.hasFocus
+              child: editMode.value
                   ? Row(
                       children: [
                         Expanded(
@@ -72,6 +81,13 @@ class TitleComp extends HookWidget {
                         IconButton(
                           icon: Icon(Icons.done),
                           onPressed: () {
+                            if (task.title != textEditingController.text) {
+                              task
+                                ..title = textEditingController.text
+                                ..save();
+                            }
+
+                            editMode.value = false;
                             FocusScope.of(context).unfocus();
                           },
                         ),

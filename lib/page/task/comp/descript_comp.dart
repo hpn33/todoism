@@ -20,13 +20,11 @@ class DescriptionComp extends HookWidget {
       focusNode: itemFocus,
       onFocusChange: (focused) {
         if (focused) {
-          if (!editMode.value) {
-            textEditingController.text = task.description;
-          }
-        } else {
-          if (task.description == textEditingController.text) {
-            editMode.value = false;
-          }
+          return;
+        }
+
+        if (task.description == textEditingController.text) {
+          editMode.value = false;
         }
       },
       child: Row(
@@ -36,6 +34,11 @@ class DescriptionComp extends HookWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                if (editMode.value) {
+                  return;
+                }
+
+                textEditingController.text = task.description;
                 editMode.value = true;
                 itemFocus.requestFocus();
                 textFieldFocusNode.requestFocus();
