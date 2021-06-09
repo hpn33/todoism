@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todoism/widget/main_frame.dart';
 
-import 'dashboard_view.dart';
-import 'date_view.dart';
-import 'flag_view.dart';
-import 'setting_view.dart';
-import 'tag_view.dart';
-import 'todo_view.dart';
+import 'view/dashboard_view.dart';
+import 'view/date_view.dart';
+import 'view/flag_view.dart';
+import 'view/setting_view.dart';
+import 'view/tag_view.dart';
+import 'view/todo_view.dart';
 
 class Home extends StatelessWidget {
   @override
