@@ -25,3 +25,9 @@
 - [ ] edit relations from task page
 - [x] date view: show undone tasks on panel of add task to day list
 - [ ] task page: improve dayList comp ui
+- [ ] task page: editable tags
+- [ ] rewrite readme.md
+- [ ] data center
+- [ ] improve calender - show count of task on more four
+- [ ] show task by tag on calender ( need a view or on tag view )
+- [ ] widget: show tasks on dashboard by time (old , today , future) -> row that do same by horizon
