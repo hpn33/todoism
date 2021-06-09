@@ -16,7 +16,7 @@ import 'type/task_tag_rel_type.dart';
 final hiveW = HiveWrapper();
 
 class HiveWrapper extends HostHiveWrapper {
-  final boxs = <String, BoxWrapper>{
+  final boxs = {
     'tasks': BoxTasks(),
     'day_lists': BoxDayLists(),
     'tags': BoxTags(),
