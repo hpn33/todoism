@@ -31,3 +31,4 @@
 - [ ] improve calender - show count of task on more four
 - [ ] show task by tag on calender ( need a view or on tag view )
 - [ ] widget: show tasks on dashboard by time (old , today , future) -> row that do same by horizon
+- [x] show count of tasks in dashboard

@@ -42,8 +42,14 @@ class DashboardView extends HookWidget {
         useListenable(hiveW.taskDayListRels.box.listenable());
         useListenable(hiveW.tasks.box.listenable());
 
+        final taskCount = dayLists
+            .map((e) => e.tasks)
+            .reduce((value, element) => [...value, ...element])
+            .where((e) => e.state == false)
+            .length;
+
         return StyledBox(
-          title: 'Old - Not Complete',
+          title: 'Old - Not Complete ( Count $taskCount )',
           isList: true,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -95,6 +101,8 @@ class DashboardView extends HookWidget {
         useListenable(hiveW.taskDayListRels.box.listenable());
         useListenable(hiveW.tasks.box.listenable());
 
+        final unpassedTask = tasks.where((element) => element.state!).length;
+
         return StyledBox(
           isList: true,
           child: Padding(
@@ -105,6 +113,7 @@ class DashboardView extends HookWidget {
                   dateTime: DateTime.now(),
                   afterAdd: () {},
                 ),
+                Text('${tasks.length} / $unpassedTask'),
                 header(daylist, Colors.purple),
                 Expanded(
                   child: ListView.builder(
@@ -138,8 +147,14 @@ class DashboardView extends HookWidget {
         useListenable(hiveW.taskDayListRels.box.listenable());
         useListenable(hiveW.tasks.box.listenable());
 
+        final taskCount = dayLists
+            .map((e) => e.tasks)
+            .reduce((value, element) => [...value, ...element])
+            .where((e) => e.state == false)
+            .length;
+
         return StyledBox(
-          title: 'Comming',
+          title: 'Comming ( Count $taskCount )',
           isList: true,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
