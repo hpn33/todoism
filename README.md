@@ -173,6 +173,15 @@ tag_id
 هر دو امکان پذیر هستند
 
 
+
+## review
+
+وقتی یه کار اساخته میشه و در حالت با تاریخ قرار میگیره، تویه این حالت اگر کار انجام نشه یا در کل به روزحای اینده اینتقال داده میشه-----
+میخوام وقتی کار انجام میهش فقط زمانی که کار انجام شده تیک تایید بخوره
+با توجه به قابلیت های جدیدی که میخوام باید ساختار داده های برنامه رو اعوض کنم
+
+
+
 ## Concept
 
 ### task
@@ -189,3 +198,47 @@ tag_id
 پروژه
 میشه برجسب پیش فرض تایین کرد
 داخل پروژه میشه کار و پرچم ساخت
+
+
+
+
+
+## ideas
+
+Order
+
+which task is importent
+
+HOW
+> make a order table for dayLists
+> 
+> or
+> 
+> add order in task dayList relation 
+
+---
+
+Goal
+
+different goal for make life easier
+some time many we make many task but which is improtant
+
+some time we make a decition to our life and make a goal but also we to other stuff that not push us to our goal so we need to categoraiz this
+
+HOW
+> simple way is making task for it
+> 
+> make a table for goals
+
+----
+
+Projects
+
+a project that happend by tasks
+
+HOW
+> easy wah organaize with tags
+> 
+> make a table for projects
+> 
+> or use tag as a project ( any tasks is use some tag is under projct )
