@@ -3,6 +3,7 @@ import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/day_list_type.dart';
 import 'package:todoism/service/hive/type/task_day_list_rel_type.dart';
+import 'package:todoism/util/date_extention.dart';
 
 import 'tag_type.dart';
 import 'task_tag_rel_type.dart';
@@ -40,6 +41,10 @@ class Task extends HiveObjectWrapper {
 
   Iterable<Tag> get tags => taskTagRels.joinTo(hiveW.tags, (e) => e.tagId);
 
+  bool get hasToday => dayLists
+      .where((element) => element.date == DateTime.now().justDate())
+      .isNotEmpty;
+
   Future<void> addTag(Tag tag) async {
     if (tag.key == null) {
       hiveW.tags.setOnTask(tag.title, taskId: key);
@@ -52,4 +57,6 @@ class Task extends HiveObjectWrapper {
   Future<void> addToDayList(DateTime dateTime) async {
     hiveW.dayLists.submitTask(dateTime, taskId: key);
   }
+
+  void addtoToday() => addToDayList(DateTime.now());
 }

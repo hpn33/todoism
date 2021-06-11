@@ -1,3 +1,4 @@
+import 'package:context_menus/context_menus.dart';
 import 'package:flutter/material.dart';
 import 'package:todoism/page/home/home.dart';
 
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Home(),
+      builder: (context, child) {
+        return ContextMenuOverlay(child: child!);
+      },
     );
   }
 }

@@ -18,8 +18,10 @@
 - [x] add exist task to day list
 - [ ] delete task from day list from date page
 - [ ] delete task from day list from task page
-- [ ] refactor task item
+- [x] rewrite task item
 > one click to detail page - more option by right click or gesture actions
+> 
+> remove all editable feature and buttons
 - [x] fix: render error about flex layout ( Expanded )
 - [ ] task panel
 - [x] fix: error on not exist day list
@@ -36,3 +38,6 @@
 - [x] show count of tasks in dashboard
 - [x] fix: fix dayList date on date without clock detail ( ymd 00:00:00 ) for better call culat between days
 > on dayList, diff var used DateTime.now() with clock i Just remove clock
+- [ ] todo view: use toggle button for state filter
+- [ ] add a status on task item to show that is on the today daylist
+- [ ] fix: dashboard - old & future list not scrolling because listveiw
