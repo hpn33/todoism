@@ -68,20 +68,17 @@ class DashboardView extends HookWidget {
                 return Column(
                   children: [
                     header(dayList, Colors.blueGrey),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: tasks.length,
-                      itemBuilder: (context, index) {
-                        final task = tasks.elementAt(index);
-
-                        return ProviderScope(
-                          key: Key(task.key.toString()),
-                          overrides: [
-                            currentTask.overrideWithValue(task),
-                          ],
-                          child: TaskItem(mode: TaskItemMode.simple),
-                        );
-                      },
+                    Column(
+                      children: [
+                        for (final task in tasks)
+                          ProviderScope(
+                            key: Key(task.key.toString()),
+                            overrides: [
+                              currentTask.overrideWithValue(task),
+                            ],
+                            child: TaskItem(mode: TaskItemMode.simple),
+                          ),
+                      ],
                     ),
                   ],
                 );
@@ -172,20 +169,17 @@ class DashboardView extends HookWidget {
                 return Column(
                   children: [
                     header(dayList, Colors.blue),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: tasks.length,
-                      itemBuilder: (context, index) {
-                        final task = tasks.elementAt(index);
-
-                        return ProviderScope(
-                          key: Key(task.key.toString()),
-                          overrides: [
-                            currentTask.overrideWithValue(task),
-                          ],
-                          child: TaskItem(mode: TaskItemMode.simple),
-                        );
-                      },
+                    Column(
+                      children: [
+                        for (final task in tasks)
+                          ProviderScope(
+                            key: Key(task.key.toString()),
+                            overrides: [
+                              currentTask.overrideWithValue(task),
+                            ],
+                            child: TaskItem(mode: TaskItemMode.simple),
+                          ),
+                      ],
                     ),
                   ],
                 );

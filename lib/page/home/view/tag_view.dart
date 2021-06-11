@@ -88,11 +88,10 @@ class TagView extends HookWidget {
           children: [
             SizedBox(width: 100),
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: tasks.length,
-                itemBuilder: (context, index) =>
-                    taskItem(tasks.elementAt(index)),
+              child: Column(
+                children: [
+                  for (final task in tasks) taskItem(task),
+                ],
               ),
             ),
           ],
