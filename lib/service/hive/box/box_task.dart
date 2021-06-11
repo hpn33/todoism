@@ -18,33 +18,34 @@ class BoxTasks extends BoxWrapper<Task> {
   }
 
   // return any task that have at last one tag filter
-  Iterable<Task> byTags(List<int> tagIds, {bool inner = false}) {
-    final tasks = all.toList().reversed;
+  // if was inner should mach with all tags
+  // Iterable<Task> byTags(List<int> tagIds, {bool inner = false}) {
+  //   final tasks = all.toList().reversed;
 
-    if (tagIds.isEmpty) {
-      return tasks;
-    }
+  //   if (tagIds.isEmpty) {
+  //     return tasks;
+  //   }
 
-    return tasks.where(
-      (task) {
-        final matchIds = task.taskTagRels
-            .map((e) => e.tagId)
-            .where((id) => tagIds.contains(id));
+  //   return tasks.where(
+  //     (task) {
+  //       final matchIds = task.taskTagRels
+  //           .map((e) => e.tagId)
+  //           .where((id) => tagIds.contains(id));
 
-        if (!inner) {
-          return matchIds.isNotEmpty;
-        }
+  //       if (!inner) {
+  //         return matchIds.isNotEmpty;
+  //       }
 
-        var vals = tagIds.map((id) => matchIds.contains(id));
+  //       var vals = tagIds.map((id) => matchIds.contains(id));
 
-        for (final val in vals) {
-          if (!val) {
-            return false;
-          }
-        }
+  //       for (final val in vals) {
+  //         if (!val) {
+  //           return false;
+  //         }
+  //       }
 
-        return true;
-      },
-    );
-  }
+  //       return true;
+  //     },
+  //   );
+  // }
 }

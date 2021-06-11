@@ -15,15 +15,41 @@ class TodoView extends HookWidget {
       final tagIds = ref.watch(TagFilterComp.filtersProvider).state;
       final inner = ref.watch(TagFilterComp.innerProvider).state;
 
-      final all = ref.watch(StateFilterComp.allProvider).state;
-      final completed = ref.watch(StateFilterComp.completedProvider).state;
+      final stateFilter = ref.watch(StateFilterComp.stateFilterP).state;
 
       final searchField = ref.watch(SearchFilterComp.searchProvider).state;
 
-      var content = hiveW.tasks.byTags(tagIds, inner: inner);
+      var content = hiveW.tasks.all;
 
-      if (!all) {
-        content = content.where((element) => element.state == completed);
+      if (stateFilter != null) {
+        content = content.where((element) => element.state == stateFilter);
+      }
+
+      // tags
+      if (tagIds.isNotEmpty) {
+        content = content.where(
+          (element) {
+            final matchIds = element.taskTagRels
+                .map((e) => e.tagId)
+                .where((id) => tagIds.contains(id));
+
+            if (!inner) {
+              return matchIds.isNotEmpty;
+            }
+
+            return tagIds.length == matchIds.length;
+
+            // var vals = tagIds.map((id) => matchIds.contains(id));
+
+            // for (final val in vals) {
+            //   if (!val) {
+            //     return false;
+            //   }
+            // }
+
+            // return true;
+          },
+        );
       }
 
       if (searchField.isNotEmpty) {
@@ -32,7 +58,7 @@ class TodoView extends HookWidget {
         );
       }
 
-      return content.toList();
+      return content.toList().reversed.toList();
     },
   );
 
@@ -125,14 +151,11 @@ class SearchFilterComp extends HookWidget {
 }
 
 class StateFilterComp extends HookWidget {
-  static final allProvider = StateProvider((ref) => true);
-  static final completedProvider = StateProvider((ref) => false);
+  static final stateFilterP = StateProvider<bool?>((ref) => null);
 
   @override
   Widget build(BuildContext context) {
-    // state
-    final all = useProvider(allProvider);
-    final completed = useProvider(completedProvider);
+    final stateFilter = useProvider(stateFilterP);
 
     return Card(
       child: Padding(
@@ -140,23 +163,49 @@ class StateFilterComp extends HookWidget {
         child: Row(
           children: [
             Text('State'),
-            Checkbox(
-              value: all.state,
-              onChanged: (v) {
-                all.state = v!;
-              },
-            ),
-            Text('All'),
-            if (!all.state)
-              Row(
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Checkbox(
-                    value: completed.state,
-                    onChanged: (v) => completed.state = v!,
+                  Row(
+                    children: [
+                      Radio<bool?>(
+                        value: null,
+                        groupValue: stateFilter.state,
+                        onChanged: (v) {
+                          stateFilter.state = v;
+                        },
+                      ),
+                      Text('All'),
+                    ],
                   ),
-                  Text('Completed'),
+                  Row(
+                    children: [
+                      Radio<bool?>(
+                        value: true,
+                        groupValue: stateFilter.state,
+                        onChanged: (v) {
+                          stateFilter.state = v;
+                        },
+                      ),
+                      Text('Done'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio<bool?>(
+                        value: false,
+                        groupValue: stateFilter.state,
+                        onChanged: (v) {
+                          stateFilter.state = v;
+                        },
+                      ),
+                      Text('Not'),
+                    ],
+                  ),
                 ],
               ),
+            ),
           ],
         ),
       ),
