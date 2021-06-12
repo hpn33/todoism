@@ -31,7 +31,7 @@ class TaskPage extends HookWidget {
             ),
             Expanded(
               flex: 2,
-              child: Column(
+              child: ListView(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
