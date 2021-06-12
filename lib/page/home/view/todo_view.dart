@@ -104,6 +104,7 @@ class TodoView extends HookWidget {
                         key: Key(task.title),
                         overrides: [
                           currentTask.overrideWithValue(task),
+                          currentDay.overrideWithValue(null),
                         ],
                         child: TaskItem(key: Key(task.title)),
                       );

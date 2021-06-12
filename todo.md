@@ -16,8 +16,7 @@
 - [ ] fix: some time data change, somewhere else ui not refreshed ( need to be lisenable but by default  - maybe by data center be solved)
 - [x] improve dashboard ui
 - [x] add exist task to day list
-- [ ] delete task from day list from date page
-- [ ] delete task from day list from task page
+- [x] delete task from day list from date page & task page
 - [x] rewrite task item
 > one click to detail page - more option by right click or gesture actions
 > 
@@ -39,5 +38,6 @@
 - [x] fix: fix dayList date on date without clock detail ( ymd 00:00:00 ) for better call culat between days
 > on dayList, diff var used DateTime.now() with clock i Just remove clock
 - [x] todo view: use radio buttons for state filter
-- [ ] add a status on task item to show that is on the today daylist
+- [ ] ~~add a status on task item to show that is on the today daylist~~
 - [x] fix: dashboard - old & future list not scrolling because listveiw & same issue on tag view
+- [x] date view: remove from dayList - by right click

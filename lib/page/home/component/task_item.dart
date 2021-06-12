@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/page/task/task_page.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
+import 'package:todoism/service/hive/type/day_list_type.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -13,6 +14,7 @@ enum TaskItemMode {
 }
 
 final currentTask = ScopedProvider<Task>(null);
+final currentDay = ScopedProvider<DayList?>(null);
 
 class TaskItem extends HookWidget {
   const TaskItem({Key? key, this.mode}) : super(key: key);
@@ -56,6 +58,8 @@ class TaskItem extends HookWidget {
 
   Widget menuOptions(BuildContext context) {
     final task = context.read(currentTask);
+    final dayList = context.read(currentDay);
+
     return GenericContextMenu(
       buttonConfigs: [
         ContextMenuButtonConfig(
@@ -73,6 +77,11 @@ class TaskItem extends HookWidget {
           ContextMenuButtonConfig(
             "Add to Today",
             onPressed: () => task.addtoToday(),
+          ),
+        if (dayList != null)
+          ContextMenuButtonConfig(
+            "Remove From This Day",
+            onPressed: () => task.removeFromThisDay(dayList),
           ),
         ContextMenuButtonConfig(
           "Delete",

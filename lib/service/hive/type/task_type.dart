@@ -59,4 +59,11 @@ class Task extends HiveObjectWrapper {
   }
 
   void addtoToday() => addToDayList(DateTime.now());
+
+  void removeFromThisDay(DayList dayList) {
+    dayList.taskDayListRels
+        .where((element) => element.taskId == key)
+        .first
+        .delete();
+  }
 }

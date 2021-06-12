@@ -7,20 +7,23 @@ import 'package:todoism/page/home/component/dialog_task_panel.dart';
 import 'package:todoism/page/home/component/task_item.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todoism/service/hive/type/day_list_type.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:todoism/widget/provide_future_list.dart';
 
 class DateView extends HookWidget {
-  static final selectedDayP = StateProvider((ref) => DateTime.now());
-  final tasksProvider = FutureProvider<List<Task>>((ref) async {
-    final selectedDay = ref.watch(selectedDayP);
+  final selectedDayP = StateProvider((ref) => DateTime.now());
+  late final StateProvider<DayList> dayListP = StateProvider<DayList>((ref) {
+    final date = ref.watch(selectedDayP).state;
 
-    return hiveW.dayLists
-        .ofDay(selectedDay.state)
-        .tasks
-        .toList()
-        .reversed
-        .toList();
+    return hiveW.dayLists.ofDay(date);
+  });
+
+  late final FutureProvider<List<Task>> tasksProvider =
+      FutureProvider<List<Task>>((ref) async {
+    final dayList = ref.watch(dayListP).state;
+
+    return dayList.tasks.toList().reversed.toList();
   });
 
   @override
@@ -129,6 +132,9 @@ class DateView extends HookWidget {
                         key: Key(task.title),
                         overrides: [
                           currentTask.overrideWithValue(task),
+                          currentDay.overrideWithValue(
+                            context.read(dayListP).state,
+                          ),
                         ],
                         child: TaskItem(key: Key(task.title)),
                       );

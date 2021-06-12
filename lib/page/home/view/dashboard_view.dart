@@ -73,6 +73,7 @@ class DashboardView extends HookWidget {
                             key: Key(task.key.toString()),
                             overrides: [
                               currentTask.overrideWithValue(task),
+                              currentDay.overrideWithValue(dayList),
                             ],
                             child: TaskItem(mode: TaskItemMode.simple),
                           ),
@@ -121,6 +122,7 @@ class DashboardView extends HookWidget {
                         key: Key(task.key.toString()),
                         overrides: [
                           currentTask.overrideWithValue(task),
+                          currentDay.overrideWithValue(daylist),
                         ],
                         child: TaskItem(mode: TaskItemMode.simple),
                       );
@@ -174,6 +176,7 @@ class DashboardView extends HookWidget {
                             key: Key(task.key.toString()),
                             overrides: [
                               currentTask.overrideWithValue(task),
+                              currentDay.overrideWithValue(dayList),
                             ],
                             child: TaskItem(mode: TaskItemMode.simple),
                           ),
