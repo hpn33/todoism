@@ -9,6 +9,8 @@ class BoxDayLists extends BoxWrapper<DayList> {
   @override
   Future<void> initBox(Box<DayList> box) async {}
 
+  DayList get today => ofDay(DateTime.now());
+
   DayList ofDay(DateTime dateTime) {
     final fixedDate = dateTime.justDate();
 

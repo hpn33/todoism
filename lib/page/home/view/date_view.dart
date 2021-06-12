@@ -68,6 +68,22 @@ class DateView extends HookWidget {
                   },
                 ),
               ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: tasks.when(
+                    data: (List<Task> value) {
+                      final done =
+                          value.where((element) => element.state!).length;
+
+                      return Text('${value.length}/$done');
+                    },
+                    error: (Object error, StackTrace? stackTrace) =>
+                        Text('xxx'),
+                    loading: () => Text('...'),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
