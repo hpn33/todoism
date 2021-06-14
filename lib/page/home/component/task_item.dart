@@ -102,7 +102,7 @@ class TitleComp extends HookWidget {
     return Row(
       children: [
         SizedBox(
-          width: 80,
+          width: 50,
           child: Row(
             children: [
               Checkbox(
@@ -120,7 +120,7 @@ class TitleComp extends HookWidget {
         Expanded(
           child: Text(
             task.title,
-            style: TextStyle(fontSize: 22),
+            style: TextStyle(fontSize: 16),
           ),
         ),
       ],
@@ -138,7 +138,7 @@ class DescriptionComp extends HookWidget {
     }
     return Row(
       children: [
-        SizedBox(width: 80),
+        SizedBox(width: 50),
         Expanded(
           child: Container(
             padding: const EdgeInsets.all(8),

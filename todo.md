@@ -13,7 +13,7 @@
 - [x] fix: date view: task not showen after add
 - [x] dashboard view: not complete old task, today tasks, upcomming tasks
 - [ ] tag color
-- [ ] fix: some time data change, somewhere else ui not refreshed ( need to be lisenable but by default  - maybe by data center be solved)
+- [ ] fix: some time data change, somewhere else ui not refreshed ( need to be lisenable but by default - maybe by data center be solved)
 - [x] improve dashboard ui
 - [x] add exist task to day list
 - [x] delete task from day list from date page & task page
@@ -22,13 +22,12 @@
 > 
 > remove all editable feature and buttons
 - [x] fix: render error about flex layout ( Expanded )
-- [ ] task panel
+- [ ] flaot task panel
 - [x] fix: error on not exist day list
 - [ ] expriment: dock ui
 - [ ] edit relations from task page ( daylists & tags )
 - [x] date view: show undone tasks on panel of add task to day list
 - [ ] task page: improve dayList comp ui
-- [ ] task page: editable tags
 - [ ] rewrite readme.md
 - [ ] data center
 - [ ] improve calender - show count of task on more four
