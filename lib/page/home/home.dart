@@ -64,6 +64,7 @@ class BottomComp extends HookWidget {
     final tasks = hiveW.tasks.all;
 
     useListenable(hiveW.tasks.box.listenable());
+    useListenable(hiveW.taskDayListRels.box.listenable());
 
     return Container(
       height: 30,

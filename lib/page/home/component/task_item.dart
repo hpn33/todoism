@@ -31,9 +31,10 @@ class TaskItem extends HookWidget {
           onTap: () {
             context.read(TaskPage.selectedTask).state =
                 context.read(currentTask);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TaskPage()),
+
+            showDialog(
+              context: context,
+              builder: (context) => TaskPage(),
             );
           },
           child: Material(

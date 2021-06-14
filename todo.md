@@ -22,12 +22,13 @@
 > 
 > remove all editable feature and buttons
 - [x] fix: render error about flex layout ( Expanded )
-- [ ] flaot task panel
+- [x] flaot task panel
 - [x] fix: error on not exist day list
 - [ ] expriment: dock ui
-- [ ] edit relations from task page ( daylists & tags )
+- [x] edit relations from task page ( daylists & tags )
 - [x] date view: show undone tasks on panel of add task to day list
 - [ ] task page: improve dayList comp ui
+- [ ] task page: improve tag comp ui ( use overlay for adding tag dialog)
 - [ ] rewrite readme.md
 - [ ] data center
 - [ ] improve calender - show count of task on more four

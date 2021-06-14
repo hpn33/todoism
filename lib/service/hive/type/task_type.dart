@@ -66,4 +66,8 @@ class Task extends HiveObjectWrapper {
         .first
         .delete();
   }
+
+  void deleteTag(Tag tag) {
+    taskTagRels.where((element) => element.tagId == tag.key).first.delete();
+  }
 }

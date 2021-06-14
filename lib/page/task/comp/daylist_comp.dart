@@ -5,6 +5,7 @@ import 'package:todoism/page/task/task_page.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/widget/styled_box.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todoism/util/date_extention.dart';
 
 class DayListComp extends HookWidget {
   const DayListComp({Key? key}) : super(key: key);
@@ -54,12 +55,16 @@ class DayListComp extends HookWidget {
                         await task.addToDayList(pickedDate);
                       },
                     ),
-                    TextButton(
-                      child: Text('Add To Today'),
-                      onPressed: () {
-                        task.addToDayList(DateTime.now());
-                      },
-                    ),
+                    if (task.dayLists
+                        .where((element) =>
+                            element.date == DateTime.now().justDate())
+                        .isEmpty)
+                      TextButton(
+                        child: Text('Add To Today'),
+                        onPressed: () {
+                          task.addToDayList(DateTime.now());
+                        },
+                      ),
                   ],
                 ),
               ],
@@ -79,7 +84,7 @@ class DayListComp extends HookWidget {
                     children: [
                       IconButton(
                         icon: Icon(Icons.clear),
-                        onPressed: () => dayList.delete(),
+                        onPressed: () => task.removeFromThisDay(dayList),
                       ),
                       SizedBox(width: 10),
                       Text(dayList.date.toString()),
