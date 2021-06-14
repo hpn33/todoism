@@ -43,9 +43,7 @@ class TaskItem extends HookWidget {
               child: Column(
                 children: [
                   TitleComp(),
-                  SizedBox(height: 10),
                   DescriptionComp(),
-                  SizedBox(height: 10),
                   TagComp(),
                 ],
               ),
@@ -136,20 +134,24 @@ class DescriptionComp extends HookWidget {
     if (task.description.isEmpty) {
       return SizedBox();
     }
-    return Row(
-      children: [
-        SizedBox(width: 50),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        children: [
+          SizedBox(width: 50),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(task.description),
             ),
-            child: Text(task.description),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -162,15 +164,22 @@ class TagComp extends HookWidget {
     useListenable(hiveW.tags.box.listenable());
     useListenable(hiveW.taskTagRels.box.listenable());
 
-    return Wrap(
-      children: task.tags
-          .map(
-            (e) => ActionChip(
-              onPressed: () {},
-              label: Text(e.title),
-            ),
-          )
-          .toList(),
+    if (task.tags.isEmpty) {
+      return SizedBox();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Wrap(
+        children: task.tags
+            .map(
+              (e) => ActionChip(
+                onPressed: () {},
+                label: Text(e.title),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
