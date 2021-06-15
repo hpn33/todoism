@@ -29,7 +29,7 @@
 - [x] date view: show undone tasks on panel of add task to day list
 - [ ] task page: improve dayList comp ui
 - [ ] task page: improve tag comp ui ( use overlay for adding tag dialog)
-- [ ] rewrite readme.md
+- [x] rewrite readme.md
 - [ ] data center
 - [ ] improve calender - show count of task on more four
 - [ ] show task by tag on calender ( need a view or on tag view )
@@ -41,3 +41,4 @@
 - [ ] ~~add a status on task item to show that is on the today daylist~~
 - [x] fix: dashboard - old & future list not scrolling because listveiw & same issue on tag view
 - [x] date view: remove from dayList - by right click
+- [ ] a view for showing by tags on calender

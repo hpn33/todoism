@@ -7,8 +7,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'view/dashboard_view.dart';
 import 'view/date_view.dart';
-import 'view/flag_view.dart';
-import 'view/setting_view.dart';
 import 'view/tag_view.dart';
 import 'view/todo_view.dart';
 
@@ -27,8 +25,6 @@ class TabView extends HookWidget {
     'todo': TodoView(),
     'date': DateView(),
     'tags': TagView(),
-    'flags': FlagView(),
-    'setting': SettingView(),
   };
 
   @override
