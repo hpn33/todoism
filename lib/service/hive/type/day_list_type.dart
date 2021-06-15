@@ -30,6 +30,8 @@ class DayList extends HiveObjectWrapper {
     hiveW.taskDayListRels.submit(taskId, key);
   }
 
+  bool get isToday => date == DateTime.now().justDate();
+
   int get diff =>
       (date.difference(DateTime.now().justDate()).inHours / 24).round();
 

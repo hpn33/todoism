@@ -80,17 +80,25 @@ class DayListComp extends HookWidget {
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () => task.removeFromThisDay(dayList),
-                      ),
-                      SizedBox(width: 10),
-                      Text(dayList.date.toString()),
-                      SizedBox(width: 10),
-                      Text(dayList.diff.toString()),
-                    ],
+                  child: Container(
+                    decoration: dayList.isToday
+                        ? BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                        : null,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () => task.removeFromThisDay(dayList),
+                        ),
+                        SizedBox(width: 10),
+                        Text(dayList.date.toString()),
+                        SizedBox(width: 10),
+                        Text(dayList.diff.toString()),
+                      ],
+                    ),
                   ),
                 );
               },
