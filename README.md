@@ -221,7 +221,7 @@ HOW
 Goal
 
 different goal for make life easier
-some time many we make many task but which is improtant
+some time we make many task but which is improtant
 
 some time we make a decition to our life and make a goal but also we to other stuff that not push us to our goal so we need to categoraiz this
 
@@ -242,3 +242,10 @@ HOW
 > make a table for projects
 > 
 > or use tag as a project ( any tasks is use some tag is under projct )
+
+----
+
+وقتی یک هدف انتخاب میشه به صورت مداوم کاری در اون راستا انجام میشه
+باید به نحوی این کار ها را در یک راستا قرار داد و قابل محاسبه باشد
+
+

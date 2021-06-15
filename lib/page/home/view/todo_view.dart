@@ -16,9 +16,16 @@ class TodoView extends HookWidget {
 
       final stateFilter = ref.watch(StateFilterComp.stateFilterP).state;
 
+      final hasDateFilter = ref.watch(HasDateFilterComp.hasDateFilterP).state;
+
       final searchField = ref.watch(SearchFilterComp.searchProvider).state;
 
       var content = hiveW.tasks.all;
+
+      if (hasDateFilter != null) {
+        content = content
+            .where((element) => element.dayLists.isNotEmpty == hasDateFilter);
+      }
 
       if (stateFilter != null) {
         content = content.where((element) => element.state == stateFilter);
@@ -74,6 +81,7 @@ class TodoView extends HookWidget {
             child: ListView(
               children: [
                 SearchFilterComp(),
+                HasDateFilterComp(),
                 StateFilterComp(),
                 TagFilterComp(),
                 Card(
@@ -197,6 +205,69 @@ class StateFilterComp extends HookWidget {
                         groupValue: stateFilter.state,
                         onChanged: (v) {
                           stateFilter.state = v;
+                        },
+                      ),
+                      Text('Not'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HasDateFilterComp extends HookWidget {
+  static final hasDateFilterP = StateProvider<bool?>((ref) => null);
+
+  @override
+  Widget build(BuildContext context) {
+    final hasDateFilter = useProvider(hasDateFilterP);
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Text('Has Date'),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Radio<bool?>(
+                        value: null,
+                        groupValue: hasDateFilter.state,
+                        onChanged: (v) {
+                          hasDateFilter.state = v;
+                        },
+                      ),
+                      Text('All'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio<bool?>(
+                        value: true,
+                        groupValue: hasDateFilter.state,
+                        onChanged: (v) {
+                          hasDateFilter.state = v;
+                        },
+                      ),
+                      Text('InTime'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio<bool?>(
+                        value: false,
+                        groupValue: hasDateFilter.state,
+                        onChanged: (v) {
+                          hasDateFilter.state = v;
                         },
                       ),
                       Text('Not'),
