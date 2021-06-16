@@ -268,10 +268,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: dfd4eae040b9ad966dabde47c9a912b58133e8d9
+      resolved-ref: "8ecb5ae8604e63946bf2bce384e33403393af9cc"
       url: "https://github.com/hpn33/hive_wrapper.git"
     source: git
-    version: "0.2.5+1"
+    version: "0.2.5+13"
   hooks_riverpod:
     dependency: "direct main"
     description:

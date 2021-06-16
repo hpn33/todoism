@@ -1,5 +1,7 @@
+import 'package:hive/hive.dart';
 import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/box/box_day_list.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'box/box_tag.dart';
 import 'box/box_task.dart';
@@ -14,28 +16,33 @@ import 'type/task_tag_rel_type.dart';
 final hiveW = HiveWrapper();
 
 class HiveWrapper extends HostHiveWrapper {
-  final boxs = {
-    'tasks': BoxTasks(),
-    'day_lists': BoxDayLists(),
-    'tags': BoxTags(),
-    'task_tag_rels': BoxTaskTagRels(),
-    'task_day_list_rels': BoxTaskDayListRels(),
-  };
-
-  BoxTasks get tasks => boxs['tasks'] as BoxTasks;
-  BoxDayLists get dayLists => boxs['day_lists'] as BoxDayLists;
-  BoxTags get tags => boxs['tags'] as BoxTags;
-  BoxTaskTagRels get taskTagRels => boxs['task_tag_rels'] as BoxTaskTagRels;
-  BoxTaskDayListRels get taskDayListRels =>
-      boxs['task_day_list_rels'] as BoxTaskDayListRels;
-
-  final adaptors = [
-    TaskAdapter(),
-    DayListAdapter(),
-    TagAdapter(),
-    TaskTagRelAdapter(),
-    TaskDayListRelAdapter(),
+  final boxs = [
+    BoxTasks(),
+    BoxDayLists(),
+    BoxTags(),
+    BoxTaskTagRels(),
+    BoxTaskDayListRels(),
   ];
+
+  BoxTasks get tasks => boxs[0] as BoxTasks;
+  BoxDayLists get dayLists => boxs[1] as BoxDayLists;
+  BoxTags get tags => boxs[2] as BoxTags;
+  BoxTaskTagRels get taskTagRels => boxs[3] as BoxTaskTagRels;
+  BoxTaskDayListRels get taskDayListRels => boxs[4] as BoxTaskDayListRels;
+
+  Future<void> loadHive() async {
+    await Hive.initFlutter();
+
+    Hive.registerAdapter(TaskAdapter());
+    Hive.registerAdapter(DayListAdapter());
+    Hive.registerAdapter(TagAdapter());
+    Hive.registerAdapter(TaskTagRelAdapter());
+    Hive.registerAdapter(TaskDayListRelAdapter());
+
+    for (final box in boxs) {
+      await box.load();
+    }
+  }
 
   Future<void> addTaskQuick(String title, {DateTime? date}) async {
     await addTask(title, '', date, []);
