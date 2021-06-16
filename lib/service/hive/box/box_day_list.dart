@@ -4,7 +4,7 @@ import 'package:todoism/service/hive/type/day_list_type.dart';
 import 'package:todoism/util/date_extention.dart';
 
 class BoxDayLists extends BoxWrapper<DayList> {
-  BoxDayLists() : super('day_lists');
+  BoxDayLists() : super('day_lists', 1, {});
 
   @override
   Future<void> initBox(Box<DayList> box) async {}

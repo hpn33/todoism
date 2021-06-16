@@ -3,7 +3,7 @@ import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/task_day_list_rel_type.dart';
 
 class BoxTaskDayListRels extends BoxWrapper<TaskDayListRel> {
-  BoxTaskDayListRels() : super('task_day_list_rels');
+  BoxTaskDayListRels() : super('task_day_list_rels', 1, {});
 
   @override
   Future<void> initBox(Box<TaskDayListRel> box) async {}

@@ -3,7 +3,7 @@ import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/task_tag_rel_type.dart';
 
 class BoxTaskTagRels extends BoxWrapper<TaskTagRel> {
-  BoxTaskTagRels() : super('task_tag_rels');
+  BoxTaskTagRels() : super('task_tag_rels', 1, {});
 
   @override
   Future<void> initBox(Box<TaskTagRel> box) async {}

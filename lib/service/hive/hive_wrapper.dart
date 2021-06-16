@@ -1,5 +1,3 @@
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/box/box_day_list.dart';
 
@@ -31,19 +29,13 @@ class HiveWrapper extends HostHiveWrapper {
   BoxTaskDayListRels get taskDayListRels =>
       boxs['task_day_list_rels'] as BoxTaskDayListRels;
 
-  Future<void> loadHive() async {
-    await Hive.initFlutter();
-
-    Hive.registerAdapter(TaskAdapter());
-    Hive.registerAdapter(DayListAdapter());
-    Hive.registerAdapter(TagAdapter());
-    Hive.registerAdapter(TaskTagRelAdapter());
-    Hive.registerAdapter(TaskDayListRelAdapter());
-
-    for (final box in boxs.values) {
-      await box.load();
-    }
-  }
+  final adaptors = [
+    TaskAdapter(),
+    DayListAdapter(),
+    TagAdapter(),
+    TaskTagRelAdapter(),
+    TaskDayListRelAdapter(),
+  ];
 
   Future<void> addTaskQuick(String title, {DateTime? date}) async {
     await addTask(title, '', date, []);

@@ -3,7 +3,7 @@ import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 
 class BoxTasks extends BoxWrapper<Task> {
-  BoxTasks() : super('tasks');
+  BoxTasks() : super('tasks', 1, {});
 
   @override
   Future<void> initBox(Box<Task> box) async {}

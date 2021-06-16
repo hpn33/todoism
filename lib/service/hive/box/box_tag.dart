@@ -5,7 +5,7 @@ import 'package:todoism/service/hive/type/tag_type.dart';
 import '../hive_wrapper.dart';
 
 class BoxTags extends BoxWrapper<Tag> {
-  BoxTags() : super('tags');
+  BoxTags() : super('tags', 1, {});
 
   @override
   Future<void> initBox(Box<Tag> box) async {}
