@@ -42,3 +42,5 @@
 - [x] fix: dashboard - old & future list not scrolling because listveiw & same issue on tag view
 - [x] date view: remove from dayList - by right click
 - [ ] a view for showing by tags on calender
+- [ ] change database to sql
+- [ ] 
