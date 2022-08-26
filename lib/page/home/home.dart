@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:todoism/widget/main_frame.dart';
@@ -11,6 +12,8 @@ import 'view/tag_view.dart';
 import 'view/todo_view.dart';
 
 class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MainFrame(
@@ -19,16 +22,18 @@ class Home extends StatelessWidget {
   }
 }
 
-class TabView extends HookWidget {
+class TabView extends HookConsumerWidget {
   final views = {
-    'dashboard': DashboardView(),
+    'dashboard': const DashboardView(),
     'todo': TodoView(),
     'date': DateView(),
-    'tags': TagView(),
+    'tags': const TagView(),
   };
 
+  TabView({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final tabController = useTabController(initialLength: views.length);
 
     return Column(
@@ -36,8 +41,8 @@ class TabView extends HookWidget {
         TabBar(
           controller: tabController,
           tabs: views.keys
-              .map((e) =>
-                  Tab(child: Text(e, style: TextStyle(color: Colors.black))))
+              .map((e) => Tab(
+                  child: Text(e, style: const TextStyle(color: Colors.black))))
               .toList(),
         ),
         Expanded(
@@ -46,7 +51,7 @@ class TabView extends HookWidget {
             children: views.values.toList(),
           ),
         ),
-        BottomComp(),
+        const BottomComp(),
       ],
     );
   }
@@ -64,7 +69,7 @@ class BottomComp extends HookWidget {
 
     return Container(
       height: 30,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(color: Colors.grey),
         ),
@@ -75,7 +80,7 @@ class BottomComp extends HookWidget {
           children: [
             // status
             allStatus(tasks),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             todayStatus(),
           ],
         ),

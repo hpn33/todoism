@@ -11,6 +11,8 @@ import 'package:todoism/widget/styled_box.dart';
 import 'package:todoism/service/hive/type/day_list_type.dart';
 
 class DashboardView extends HookWidget {
+  const DashboardView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +37,7 @@ class DashboardView extends HookWidget {
     return HookBuilder(
       builder: (BuildContext context) {
         final dayLists = hiveW.dayLists.before(
-          DateTime.now().add(Duration(days: -1)),
+          DateTime.now().add(const Duration(days: -1)),
         );
 
         useListenable(hiveW.taskDayListRels.box.listenable());
@@ -60,7 +62,7 @@ class DashboardView extends HookWidget {
                     dayList.tasks.where((element) => element.state == false);
 
                 if (tasks.isEmpty) {
-                  return SizedBox();
+                  return const SizedBox();
                 }
 
                 return Column(
@@ -75,7 +77,7 @@ class DashboardView extends HookWidget {
                               currentTask.overrideWithValue(task),
                               currentDay.overrideWithValue(dayList),
                             ],
-                            child: TaskItem(mode: TaskItemMode.simple),
+                            child: const TaskItem(mode: TaskItemMode.simple),
                           ),
                       ],
                     ),
@@ -124,7 +126,7 @@ class DashboardView extends HookWidget {
                           currentTask.overrideWithValue(task),
                           currentDay.overrideWithValue(daylist),
                         ],
-                        child: TaskItem(mode: TaskItemMode.simple),
+                        child: const TaskItem(mode: TaskItemMode.simple),
                       );
                     },
                   ),
@@ -163,7 +165,7 @@ class DashboardView extends HookWidget {
                 final tasks = dayList.tasks;
 
                 if (tasks.isEmpty) {
-                  return SizedBox();
+                  return const SizedBox();
                 }
 
                 return Column(
@@ -178,7 +180,7 @@ class DashboardView extends HookWidget {
                               currentTask.overrideWithValue(task),
                               currentDay.overrideWithValue(dayList),
                             ],
-                            child: TaskItem(mode: TaskItemMode.simple),
+                            child: const TaskItem(mode: TaskItemMode.simple),
                           ),
                       ],
                     ),
@@ -205,7 +207,7 @@ class DashboardView extends HookWidget {
             children: [
               Text(
                 DateFormat.yMd().format(dayList.date),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
               Text(
                 [
@@ -213,7 +215,7 @@ class DashboardView extends HookWidget {
                   '(${dayList.diff})',
                   if (dayList.diff.sign == 1) ' day',
                 ].join(),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           ),

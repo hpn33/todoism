@@ -3,10 +3,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/page/task/task_page.dart';
 
-class DescriptionComp extends HookWidget {
+class DescriptionComp extends HookConsumerWidget {
+  const DescriptionComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final task = useProvider(TaskPage.selectedTask).state;
+  Widget build(BuildContext context, ref) {
+    final task = ref.watch(TaskPage.selectedTask.state).state;
 
     final itemFocus = useFocusNode();
     useListenable(itemFocus);
@@ -48,7 +50,7 @@ class DescriptionComp extends HookWidget {
                 child: Container(
                   padding: (editMode.value ||
                           itemFocus.hasFocus ||
-                          task.description.length > 0)
+                          task.description.isNotEmpty)
                       ? const EdgeInsets.all(8)
                       : null,
                   decoration: BoxDecoration(
@@ -69,7 +71,7 @@ class DescriptionComp extends HookWidget {
                               right: 0,
                               top: 0,
                               child: IconButton(
-                                icon: Icon(Icons.done),
+                                icon: const Icon(Icons.done),
                                 onPressed: () {
                                   if (task.description !=
                                       textEditingController.text) {
@@ -85,9 +87,9 @@ class DescriptionComp extends HookWidget {
                             ),
                           ],
                         )
-                      : task.description.length > 0
+                      : task.description.isNotEmpty
                           ? Text(task.description)
-                          : Icon(Icons.add, size: 18),
+                          : const Icon(Icons.add, size: 18),
                 ),
               ),
             )

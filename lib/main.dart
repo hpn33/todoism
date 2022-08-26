@@ -7,5 +7,5 @@ import 'service/hive/hive_wrapper.dart';
 Future<void> main() async {
   await hiveW.loadHive();
 
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }

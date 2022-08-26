@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-typedef Widget AutoCompleteOverlayItemBuilder<T>(
+typedef AutoCompleteOverlayItemBuilder<T> = Widget Function(
     BuildContext context, T suggestion);
 
-typedef bool Filter<T>(T suggestion, String query);
+typedef Filter<T> = bool Function(T suggestion, String query);
 
-typedef InputEventCallback<T>(T data);
+typedef InputEventCallback<T> = Function(T data);
 
-typedef StringCallback(String data);
+typedef StringCallback = Function(String data);
 
 class AutoCompleteTextField<T> extends StatefulWidget {
   final List<T> suggestions;
@@ -41,18 +41,18 @@ class AutoCompleteTextField<T> extends StatefulWidget {
     required this.itemFilter, //Callback to filter item: return true or false depending on input text
     this.inputFormatters = const [],
     this.style,
-    this.decoration: const InputDecoration(),
+    this.decoration = const InputDecoration(),
     this.textChanged, //Callback on input text changed, this is a string
     this.textSubmitted, //Callback on input text submitted, this is also a string
     this.onFocusChanged,
-    this.keyboardType: TextInputType.text,
-    this.suggestionsAmount:
+    this.keyboardType = TextInputType.text,
+    this.suggestionsAmount =
         5, //The amount of suggestions to show, larger values may result in them going off screen
-    this.submitOnSuggestionTap:
+    this.submitOnSuggestionTap =
         true, //Call textSubmitted on suggestion tap, itemSubmitted will be called no matter what
-    this.clearOnSubmit: true, //Clear autoCompleteTextfield on submit
-    this.textInputAction: TextInputAction.done,
-    this.textCapitalization: TextCapitalization.sentences,
+    this.clearOnSubmit = true, //Clear autoCompleteTextfield on submit
+    this.textInputAction = TextInputAction.done,
+    this.textCapitalization = TextCapitalization.sentences,
     this.minLength = 1,
     this.controller,
     this.focusNode,
@@ -189,8 +189,8 @@ class AutoCompleteTextFieldState<T> extends State<AutoCompleteTextField> {
           triggerSubmitted(submittedText: submittedText),
     );
 
-    if (this.controller != null) {
-      currentText = this.controller!.text;
+    if (controller != null) {
+      currentText = controller!.text;
     }
 
     textField.focusNode!.addListener(() {

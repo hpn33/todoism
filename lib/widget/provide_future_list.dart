@@ -14,14 +14,14 @@ class ProvideFutureList<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return futureProvider.when(
-      data: (_data) {
+      data: (data) {
         return ListView.builder(
-          itemCount: _data.length,
-          itemBuilder: (context, index) => itemBuilder(context, _data[index]),
+          itemCount: data.length,
+          itemBuilder: (context, index) => itemBuilder(context, data[index]),
         );
       },
       loading: () {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
       error: (o, s) {
         return Center(child: Text('$o\n$s'));

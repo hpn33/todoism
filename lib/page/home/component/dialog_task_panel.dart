@@ -4,14 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/service/hive/hive_wrapper.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 
-class DialogTaskPanel extends HookWidget {
+class DialogTaskPanel extends HookConsumerWidget {
   final searchP = StateProvider((ref) => '');
   final uncompleteTasks = Provider(
     (ref) => hiveW.tasks.where((element) => element.state == false),
   );
   late final FutureProvider<Iterable<Task>> tasksProvider =
       FutureProvider<Iterable<Task>>((ref) async {
-    final search = ref.watch(searchP).state;
+    final search = ref.watch(searchP);
     final tasks = ref.read(uncompleteTasks);
 
     if (search.isEmpty) {
@@ -23,11 +23,11 @@ class DialogTaskPanel extends HookWidget {
 
   final DateTime selectedDay;
 
-  DialogTaskPanel(this.selectedDay);
+  DialogTaskPanel(this.selectedDay, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final tasks = useProvider(tasksProvider);
+  Widget build(BuildContext context, ref) {
+    final tasks = ref.watch(tasksProvider);
 
     final controller = useTextEditingController();
 
@@ -39,18 +39,18 @@ class DialogTaskPanel extends HookWidget {
             TextField(
               controller: controller,
               onChanged: (v) {
-                context.read(searchP).state = v;
+                ref.read(searchP.state).state = v;
               },
               focusNode: FocusNode()..requestFocus(),
             ),
             Expanded(
               child: tasks.when(
-                data: (_tasks) {
+                data: (tasks) {
                   return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: _tasks.length,
+                    itemCount: tasks.length,
                     itemBuilder: (context, index) {
-                      final task = _tasks.elementAt(index);
+                      final task = tasks.elementAt(index);
 
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -58,8 +58,9 @@ class DialogTaskPanel extends HookWidget {
                           elevation: 2,
                           child: InkWell(
                             onTap: () async {
-                              await hiveW.dayLists
+                              hiveW.dayLists
                                   .submitTask(selectedDay, taskId: task.key);
+
                               Navigator.pop(context);
                             },
                             child: Padding(
@@ -73,7 +74,7 @@ class DialogTaskPanel extends HookWidget {
                   );
                 },
                 loading: () {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 },
                 error: (o, s) {
                   return Center(child: Text('$o\n$s'));

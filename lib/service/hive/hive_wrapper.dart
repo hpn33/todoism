@@ -1,4 +1,3 @@
-import 'package:hive/hive.dart';
 import 'package:hive_wrapper/hive_wrapper.dart';
 import 'package:todoism/service/hive/box/box_day_list.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -16,6 +15,7 @@ import 'type/task_tag_rel_type.dart';
 final hiveW = HiveWrapper();
 
 class HiveWrapper extends HostHiveWrapper {
+  @override
   final boxs = [
     BoxTasks(),
     BoxDayLists(),
@@ -30,6 +30,7 @@ class HiveWrapper extends HostHiveWrapper {
   BoxTaskTagRels get taskTagRels => boxs[3] as BoxTaskTagRels;
   BoxTaskDayListRels get taskDayListRels => boxs[4] as BoxTaskDayListRels;
 
+  @override
   Future<void> loadHive() async {
     await Hive.initFlutter();
 

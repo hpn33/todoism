@@ -13,28 +13,27 @@ enum TaskItemMode {
   normal,
 }
 
-final currentTask = ScopedProvider<Task>(null);
-final currentDay = ScopedProvider<DayList?>(null);
+final currentTask = Provider<Task>((ref) => Task());
+final currentDay = Provider<DayList?>((ref) => DayList());
 
-class TaskItem extends HookWidget {
+class TaskItem extends HookConsumerWidget {
   const TaskItem({Key? key, this.mode}) : super(key: key);
 
   final TaskItemMode? mode;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 2.0),
       child: ContextMenuRegion(
-        contextMenu: menuOptions(context),
+        contextMenu: menuOptions(context, ref),
         child: InkWell(
           onTap: () {
-            context.read(TaskPage.selectedTask).state =
-                context.read(currentTask);
+            ref.read(TaskPage.selectedTask).state = ref.read(currentTask).state;
 
             showDialog(
               context: context,
-              builder: (context) => TaskPage(),
+              builder: (context) => const TaskPage(),
             );
           },
           child: Material(
@@ -42,7 +41,7 @@ class TaskItem extends HookWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                children: [
+                children: const [
                   TitleComp(),
                   DescriptionComp(),
                   TagComp(),
@@ -55,20 +54,19 @@ class TaskItem extends HookWidget {
     );
   }
 
-  Widget menuOptions(BuildContext context) {
-    final task = context.read(currentTask);
-    final dayList = context.read(currentDay);
+  Widget menuOptions(BuildContext context, ref) {
+    final task = ref.read(currentTask);
+    final dayList = ref.read(currentDay);
 
     return GenericContextMenu(
       buttonConfigs: [
         ContextMenuButtonConfig(
           "Open",
           onPressed: () {
-            context.read(TaskPage.selectedTask).state =
-                context.read(currentTask);
+            ref.read(TaskPage.selectedTask).state = ref.read(currentTask);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => TaskPage()),
+              MaterialPageRoute(builder: (context) => const TaskPage()),
             );
           },
         ),
@@ -84,17 +82,19 @@ class TaskItem extends HookWidget {
           ),
         ContextMenuButtonConfig(
           "Delete",
-          onPressed: () => context.read(currentTask).delete(),
+          onPressed: () => ref.read(currentTask).delete(),
         ),
       ],
     );
   }
 }
 
-class TitleComp extends HookWidget {
+class TitleComp extends HookConsumerWidget {
+  const TitleComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final task = useProvider(currentTask);
+  Widget build(BuildContext context, ref) {
+    final task = ref.watch(currentTask);
 
     final state = useState(task.state!);
 
@@ -105,7 +105,7 @@ class TitleComp extends HookWidget {
           child: Row(
             children: [
               Checkbox(
-                value: task.state == null ? false : task.state,
+                value: task.state ?? false,
                 onChanged: (v) {
                   task.state = v;
                   task.save();
@@ -119,7 +119,7 @@ class TitleComp extends HookWidget {
         Expanded(
           child: Text(
             task.title,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
       ],
@@ -127,20 +127,22 @@ class TitleComp extends HookWidget {
   }
 }
 
-class DescriptionComp extends HookWidget {
+class DescriptionComp extends HookConsumerWidget {
+  const DescriptionComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final task = useProvider(currentTask);
+  Widget build(BuildContext context, ref) {
+    final task = ref.watch(currentTask);
 
     if (task.description.isEmpty) {
-      return SizedBox();
+      return const SizedBox();
     }
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Row(
         children: [
-          SizedBox(width: 50),
+          const SizedBox(width: 50),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(8),
@@ -157,16 +159,18 @@ class DescriptionComp extends HookWidget {
   }
 }
 
-class TagComp extends HookWidget {
+class TagComp extends HookConsumerWidget {
+  const TagComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final task = useProvider(currentTask);
+  Widget build(BuildContext context, ref) {
+    final task = ref.watch(currentTask);
 
     useListenable(hiveW.tags.box.listenable());
     useListenable(hiveW.taskTagRels.box.listenable());
 
     if (task.tags.isEmpty) {
-      return SizedBox();
+      return const SizedBox();
     }
 
     return Padding(

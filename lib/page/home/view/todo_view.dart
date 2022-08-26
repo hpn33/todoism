@@ -8,17 +8,19 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:todoism/widget/provide_future_list.dart';
 
-class TodoView extends HookWidget {
+class TodoView extends HookConsumerWidget {
   final contentProvider = FutureProvider<List<Task>>(
     (ref) async {
-      final tagIds = ref.watch(TagFilterComp.filtersProvider).state;
-      final inner = ref.watch(TagFilterComp.innerProvider).state;
+      final tagIds = ref.watch(TagFilterComp.filtersProvider.state).state;
+      final inner = ref.watch(TagFilterComp.innerProvider.state).state;
 
-      final stateFilter = ref.watch(StateFilterComp.stateFilterP).state;
+      final stateFilter = ref.watch(StateFilterComp.stateFilterP.state).state;
 
-      final hasDateFilter = ref.watch(HasDateFilterComp.hasDateFilterP).state;
+      final hasDateFilter =
+          ref.watch(HasDateFilterComp.hasDateFilterP.state).state;
 
-      final searchField = ref.watch(SearchFilterComp.searchProvider).state;
+      final searchField =
+          ref.watch(SearchFilterComp.searchProvider.state).state;
 
       var content = hiveW.tasks.all;
 
@@ -68,11 +70,13 @@ class TodoView extends HookWidget {
     },
   );
 
+  TodoView({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     useListenable(hiveW.tasks.box.listenable());
 
-    final content = useProvider(contentProvider);
+    final content = ref.watch(contentProvider);
 
     return Row(
       children: [
@@ -80,15 +84,15 @@ class TodoView extends HookWidget {
           child: Scrollbar(
             child: ListView(
               children: [
-                SearchFilterComp(),
-                HasDateFilterComp(),
-                StateFilterComp(),
-                TagFilterComp(),
+                const SearchFilterComp(),
+                const HasDateFilterComp(),
+                const StateFilterComp(),
+                const TagFilterComp(),
                 Card(
                   child: Center(
                     child: content.when(
                       data: (v) => Text('${v.length}'),
-                      loading: () => CircularProgressIndicator(),
+                      loading: () => const CircularProgressIndicator(),
                       error: (e, s) => Text('$e\n$s'),
                     ),
                   ),
@@ -103,7 +107,7 @@ class TodoView extends HookWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                AddTaskItem(),
+                const AddTaskItem(),
                 Expanded(
                   child: ProvideFutureList<Task>(
                     futureProvider: content,
@@ -128,11 +132,13 @@ class TodoView extends HookWidget {
   }
 }
 
-class SearchFilterComp extends HookWidget {
+class SearchFilterComp extends HookConsumerWidget {
   static final searchProvider = StateProvider((ref) => '');
 
+  const SearchFilterComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final searchController = useTextEditingController();
 
     return Card(
@@ -140,13 +146,13 @@ class SearchFilterComp extends HookWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Text('Search'),
-            SizedBox(width: 10),
+            const Text('Search'),
+            const SizedBox(width: 10),
             Expanded(
               child: TextField(
                 controller: searchController,
                 onChanged: (v) {
-                  context.read(searchProvider).state = v;
+                  ref.read(searchProvider.state).state = v;
                 },
               ),
             ),
@@ -157,19 +163,21 @@ class SearchFilterComp extends HookWidget {
   }
 }
 
-class StateFilterComp extends HookWidget {
+class StateFilterComp extends HookConsumerWidget {
   static final stateFilterP = StateProvider<bool?>((ref) => null);
 
+  const StateFilterComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final stateFilter = useProvider(stateFilterP);
+  Widget build(BuildContext context, ref) {
+    final stateFilter = ref.watch(stateFilterP.state);
 
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Text('State'),
+            const Text('State'),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -183,7 +191,7 @@ class StateFilterComp extends HookWidget {
                           stateFilter.state = v;
                         },
                       ),
-                      Text('All'),
+                      const Text('All'),
                     ],
                   ),
                   Row(
@@ -195,7 +203,7 @@ class StateFilterComp extends HookWidget {
                           stateFilter.state = v;
                         },
                       ),
-                      Text('Done'),
+                      const Text('Done'),
                     ],
                   ),
                   Row(
@@ -207,7 +215,7 @@ class StateFilterComp extends HookWidget {
                           stateFilter.state = v;
                         },
                       ),
-                      Text('Not'),
+                      const Text('Not'),
                     ],
                   ),
                 ],
@@ -220,19 +228,21 @@ class StateFilterComp extends HookWidget {
   }
 }
 
-class HasDateFilterComp extends HookWidget {
+class HasDateFilterComp extends HookConsumerWidget {
   static final hasDateFilterP = StateProvider<bool?>((ref) => null);
 
+  const HasDateFilterComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final hasDateFilter = useProvider(hasDateFilterP);
+  Widget build(BuildContext context, ref) {
+    final hasDateFilter = ref.watch(hasDateFilterP.state);
 
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Text('Has Date'),
+            const Text('Has Date'),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -246,7 +256,7 @@ class HasDateFilterComp extends HookWidget {
                           hasDateFilter.state = v;
                         },
                       ),
-                      Text('All'),
+                      const Text('All'),
                     ],
                   ),
                   Row(
@@ -258,7 +268,7 @@ class HasDateFilterComp extends HookWidget {
                           hasDateFilter.state = v;
                         },
                       ),
-                      Text('InTime'),
+                      const Text('InTime'),
                     ],
                   ),
                   Row(
@@ -270,7 +280,7 @@ class HasDateFilterComp extends HookWidget {
                           hasDateFilter.state = v;
                         },
                       ),
-                      Text('Not'),
+                      const Text('Not'),
                     ],
                   ),
                 ],
@@ -283,19 +293,21 @@ class HasDateFilterComp extends HookWidget {
   }
 }
 
-class TagFilterComp extends HookWidget {
+class TagFilterComp extends HookConsumerWidget {
   static final filtersProvider = StateProvider((ref) => <int>[]);
   static final innerProvider = StateProvider((ref) => false);
 
+  const TagFilterComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final tags = hiveW.tags.all;
 
     useListenable(hiveW.tags.box.listenable());
 
     // tag
-    final filters = useProvider(filtersProvider);
-    final inner = useProvider(innerProvider);
+    final filters = ref.watch(filtersProvider.state);
+    final inner = ref.watch(innerProvider.state);
 
     return Card(
       child: Padding(
@@ -310,10 +322,10 @@ class TagFilterComp extends HookWidget {
                     inner.state = value!;
                   },
                 ),
-                Text('Inner'),
+                const Text('Inner'),
               ],
             ),
-            Divider(),
+            const Divider(),
             Wrap(
               children: tags
                   .map(

@@ -3,10 +3,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todoism/page/task/task_page.dart';
 
-class TitleComp extends HookWidget {
+class TitleComp extends HookConsumerWidget {
+  const TitleComp({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    final task = useProvider(TaskPage.selectedTask).state;
+  Widget build(BuildContext context, ref) {
+    final task = ref.watch(TaskPage.selectedTask.state).state;
 
     final state = useState(task.state!);
 
@@ -36,7 +38,7 @@ class TitleComp extends HookWidget {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     task.delete();
                     Navigator.pop(context);
@@ -44,7 +46,7 @@ class TitleComp extends HookWidget {
                 ),
                 Checkbox(
                   // tristate: task.state == null ? true : false,
-                  value: task.state == null ? false : task.state,
+                  value: task.state ?? false,
                   onChanged: (v) {
                     task
                       ..state = v
@@ -79,7 +81,7 @@ class TitleComp extends HookWidget {
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.done),
+                          icon: const Icon(Icons.done),
                           onPressed: () {
                             if (task.title != textEditingController.text) {
                               task
@@ -95,7 +97,7 @@ class TitleComp extends HookWidget {
                     )
                   : Text(
                       task.title,
-                      style: TextStyle(fontSize: 22),
+                      style: const TextStyle(fontSize: 22),
                     ),
             ),
           ),

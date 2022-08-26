@@ -25,7 +25,7 @@ class AddTaskItem extends HookWidget {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 50,
                 child: Center(child: Text('Add')),
               ),
@@ -46,7 +46,7 @@ class AddTaskItem extends HookWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.done),
+                        icon: const Icon(Icons.done),
                         onPressed: () =>
                             addTask(context, textEditingController),
                       ),

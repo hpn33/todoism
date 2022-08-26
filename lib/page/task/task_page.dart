@@ -11,10 +11,12 @@ import 'comp/title_comp.dart';
 class TaskPage extends HookWidget {
   static final selectedTask = StateProvider((ref) => Task());
 
+  const TaskPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      child: SizedBox(
         width: 700,
         child: GestureDetector(
           onTap: () {
@@ -25,7 +27,7 @@ class TaskPage extends HookWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  children: [
+                  children: const [
                     Expanded(child: TitleComp()),
                     BackButton(),
                   ],
@@ -36,13 +38,13 @@ class TaskPage extends HookWidget {
                 children: [
                   Expanded(
                     child: Column(
-                      children: [],
+                      children: const [],
                     ),
                   ),
                   Expanded(
                     flex: 3,
                     child: Column(
-                      children: [
+                      children: const [
                         TagComp(),
                         DescriptionComp(),
                         DayListComp(),

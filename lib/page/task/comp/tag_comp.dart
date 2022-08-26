@@ -45,14 +45,17 @@ import 'package:hive_flutter/hive_flutter.dart';
 //   }
 // }
 
-class TagComp extends StatefulHookWidget {
+class TagComp extends StatefulHookConsumerWidget {
   const TagComp({Key? key}) : super(key: key);
 
   @override
-  _TagCompState createState() => _TagCompState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TagCompState();
+
+  // @override
+  // _TagCompState createState() => _TagCompState();
 }
 
-class _TagCompState extends State<TagComp> {
+class _TagCompState extends ConsumerState<TagComp> {
   final FocusNode _focusNode = FocusNode();
 
   OverlayEntry? _overlayEntry;
@@ -71,7 +74,7 @@ class _TagCompState extends State<TagComp> {
 
   @override
   Widget build(BuildContext context) {
-    final task = useProvider(TaskPage.selectedTask).state;
+    final task = ref.watch(TaskPage.selectedTask.state).state;
 
     useListenable(hiveW.tags.box.listenable());
     useListenable(hiveW.taskTagRels.box.listenable());
@@ -85,13 +88,13 @@ class _TagCompState extends State<TagComp> {
             for (final tag in task.tags)
               Chip(
                 label: Text(tag.title),
-                deleteIcon: Icon(Icons.clear),
+                deleteIcon: const Icon(Icons.clear),
                 onDeleted: () => task.deleteTag(tag),
               ),
             CompositedTransformTarget(
               link: _layerLink,
               child: ActionChip(
-                label: Icon(Icons.add),
+                label: const Icon(Icons.add),
                 onPressed: () {
                   updateOverlayEntry(task);
                   _focusNode.requestFocus();
@@ -128,9 +131,9 @@ class _TagCompState extends State<TagComp> {
                     onPressed: () {
                       FocusScope.of(context).unfocus();
                     },
-                    icon: Icon(Icons.close),
+                    icon: const Icon(Icons.close),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: AutoCompleteTextField<Tag>(
                       focusNode: _focusNode,

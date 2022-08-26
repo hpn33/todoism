@@ -19,15 +19,15 @@ class _Demo extends StatelessWidget {
     return Home(
       map: Container(
           color: Colors.blueGrey,
-          child: Container(decoration: FlutterLogoDecoration())),
+          child: Container(decoration: const FlutterLogoDecoration())),
       drawer: Drawer(
-        child: ListView(children: <Widget>[
+        child: ListView(children: const <Widget>[
           DrawerHeader(child: FlutterLogo()),
           ListTile(leading: Icon(Icons.mail), title: Text('Hello')),
           ListTile(leading: Icon(Icons.send), title: Text('World')),
         ]),
       ),
-      input: Card(
+      input: const Card(
         margin: EdgeInsets.symmetric(horizontal: 16),
         child: ListTile(
           leading: Icon(Icons.location_on),
@@ -123,7 +123,7 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               AppBar(
                 leading: IconButton(
-                  icon: Icon(Icons.menu),
+                  icon: const Icon(Icons.menu),
                   onPressed: () {
                     _drawerKey.currentState?.open();
                   },
@@ -147,11 +147,11 @@ class _HomeState extends State<Home> {
         DrawerController(
           key: _drawerKey,
           alignment: DrawerAlignment.start,
-          child: widget.drawer,
           dragStartBehavior: widget.drawerDragStartBehavior,
           scrimColor: widget.drawerScrimColor,
           edgeDragWidth: widget.drawerEdgeDragWidth,
           enableOpenDragGesture: widget.drawerEnableOpenDragGesture,
+          child: widget.drawer,
         ),
       ],
     );
@@ -333,8 +333,9 @@ class _FeedControllerState extends State<_FeedController>
   }
 
   Widget _buildScrollableContent() {
-    if (_controller.status == AnimationStatus.completed)
+    if (_controller.status == AnimationStatus.completed) {
       return _buildCustomScrollView();
+    }
 
     final size = MediaQuery.of(context).size;
     return GestureDetector(
@@ -364,7 +365,7 @@ class _FeedControllerState extends State<_FeedController>
               opacity: appBarVisibility,
               sliver: SliverAppBar(
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_upward),
+                  icon: const Icon(Icons.arrow_upward),
                   onPressed: () {
                     _scrollController.animateTo(
                       0,
@@ -373,7 +374,7 @@ class _FeedControllerState extends State<_FeedController>
                     );
                   },
                 ),
-                title: Text('Messages'),
+                title: const Text('Messages'),
                 centerTitle: false,
                 pinned: true,
               ),
@@ -483,13 +484,13 @@ class EarnMoreWithVisaCard extends StatelessWidget {
         children: <Widget>[
           Transform.rotate(
             angle: 0.01,
-            origin: Offset(-200, 0),
+            origin: const Offset(-200, 0),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Container(
                 height: 60.0,
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                decoration: const BoxDecoration(
                     color: Color.fromRGBO(33, 33, 33, 1),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16),
@@ -509,13 +510,13 @@ class EarnMoreWithVisaCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Card(
               elevation: 1,
               margin: EdgeInsets.zero,
               child: Container(
                 height: 90.0,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
@@ -540,7 +541,7 @@ class FeedSingleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 250,
-        child: Card(
+        child: const Card(
           shape: BeveledRectangleBorder(),
           margin: EdgeInsets.zero,
         ));
@@ -558,7 +559,7 @@ class FeedMultiItem extends StatelessWidget {
         itemBuilder: (context, i) {
           return Container(
             width: 300,
-            child: Card(
+            child: const Card(
               shape: BeveledRectangleBorder(),
               margin: EdgeInsets.zero,
             ),
@@ -592,9 +593,9 @@ class LocationRefresher extends StatelessWidget {
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             onPressed: () {},
-            child: Icon(Icons.refresh),
+            child: const Icon(Icons.refresh),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('490 Post St', style: Theme.of(context).textTheme.subtitle2),
         ],
       ),

@@ -4,10 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'dart:ui';
 
 void main() {
-  runApp(MyHomePage());
+  runApp(const MyHomePage());
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -138,7 +140,7 @@ class _PanelState extends State<Panel> {
                   child: Container(
                     child: Text(
                       widget.title,
-                      style: TextStyle(color: SolarizedColor.base00),
+                      style: const TextStyle(color: SolarizedColor.base00),
                     ),
                   )),
             ),
@@ -537,7 +539,7 @@ class HorizontalScrollableDemo extends StatelessWidget {
           child: Container(
         width: 500,
         height: 500,
-        decoration: FlutterLogoDecoration(),
+        decoration: const FlutterLogoDecoration(),
       ))
     ]);
   }
@@ -556,7 +558,7 @@ class BigFlutterLogoDemo extends StatelessWidget {
             child: Container(
           width: 500,
           height: 500,
-          decoration: FlutterLogoDecoration(),
+          decoration: const FlutterLogoDecoration(),
         ))
       ],
     );
@@ -628,15 +630,16 @@ class ColorDemo extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Container(
                   color: SolarizedColor.base3,
                   child: Text(
                     c.toString(),
-                    style: TextStyle(fontSize: 10, color: SolarizedColor.blue),
+                    style: const TextStyle(
+                        fontSize: 10, color: SolarizedColor.blue),
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
               ],
             ),
           )

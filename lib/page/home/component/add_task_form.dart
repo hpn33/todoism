@@ -7,6 +7,8 @@ import 'package:todoism/service/hive/type/tag_type.dart';
 import 'package:todoism/widget/autocomplete.dart';
 
 class AddTaskForm extends HookWidget {
+  const AddTaskForm({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final dateTime = useState(
@@ -29,12 +31,12 @@ class AddTaskForm extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Add Task',
                   style: TextStyle(fontSize: 22),
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () {
                     hiveW.addTask(
                       titleText.text,
@@ -51,15 +53,16 @@ class AddTaskForm extends HookWidget {
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
                   onPressed: () {
-                    dateTime.value = dateTime.value.add(Duration(days: -1));
+                    dateTime.value =
+                        dateTime.value.add(const Duration(days: -1));
                   },
-                  child: Text('<'),
+                  child: const Text('<'),
                 ),
                 TextButton(
                   child: Text(DateFormat.yMd().format(dateTime.value)),
@@ -67,8 +70,8 @@ class AddTaskForm extends HookWidget {
                     final time = await showDatePicker(
                       context: context,
                       initialDate: dateTime.value,
-                      firstDate: DateTime.now().add(Duration(days: -365)),
-                      lastDate: DateTime.now().add(Duration(days: 365)),
+                      firstDate: DateTime.now().add(const Duration(days: -365)),
+                      lastDate: DateTime.now().add(const Duration(days: 365)),
                     );
 
                     if (time != null) {
@@ -78,30 +81,32 @@ class AddTaskForm extends HookWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    dateTime.value = dateTime.value.add(Duration(days: 1));
+                    dateTime.value =
+                        dateTime.value.add(const Duration(days: 1));
                   },
-                  child: Text('>'),
+                  child: const Text('>'),
                 ),
               ],
             ),
-            Text('Title'),
+            const Text('Title'),
             TextField(
               controller: titleText,
-              decoration: InputDecoration(border: OutlineInputBorder()),
+              decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
-            Text('Desc'),
+            const Text('Desc'),
             TextField(
               controller: descriptText,
-              decoration: InputDecoration(border: OutlineInputBorder()),
+              decoration: const InputDecoration(border: OutlineInputBorder()),
               minLines: 3,
               maxLines: 5,
             ),
-            Text('Tags'),
+            const Text('Tags'),
             Row(
               children: [
                 Expanded(
                   child: AutoCompleteTextField<Tag>(
-                    decoration: InputDecoration(border: OutlineInputBorder()),
+                    decoration:
+                        const InputDecoration(border: OutlineInputBorder()),
                     suggestions: hiveW.tags.all.toList(),
                     itemSubmitted: (t) {
                       tagList.value = [...tagList.value, t];

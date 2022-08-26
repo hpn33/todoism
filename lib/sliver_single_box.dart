@@ -14,6 +14,8 @@ void main() {
 class SliverMultiBoxDemo extends StatelessWidget {
   final List<_Event> events = _events();
 
+  SliverMultiBoxDemo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -50,8 +52,8 @@ class _RenderSliverEventTile extends RenderSliverSingleBoxAdapter {
     }
     final constraints = this.constraints;
 
-    final min = 150.0;
-    final max = 350.0;
+    const min = 150.0;
+    const max = 350.0;
     double childExtent;
 
     final delta = constraints.remainingPaintExtent -
@@ -89,7 +91,7 @@ class _EventTile extends StatefulWidget {
   final _Event m;
 
   const _EventTile({Key? key, required _Event model})
-      : this.m = model,
+      : m = model,
         super(key: key);
 
   @override
@@ -111,14 +113,14 @@ class __EventTileState extends State<_EventTile> {
                   .textTheme
                   .headline6!
                   .copyWith(color: Colors.white)),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text('${widget.m.time} * ${widget.m.location}',
               style: Theme.of(context)
                   .textTheme
                   .subtitle2!
                   .copyWith(color: Colors.white)),
-          SizedBox(height: 2),
-          Text('${widget.m.speaker}',
+          const SizedBox(height: 2),
+          Text(widget.m.speaker,
               style: Theme.of(context)
                   .textTheme
                   .subtitle2!

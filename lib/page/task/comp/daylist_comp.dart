@@ -7,12 +7,12 @@ import 'package:todoism/widget/styled_box.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoism/util/date_extention.dart';
 
-class DayListComp extends HookWidget {
+class DayListComp extends HookConsumerWidget {
   const DayListComp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final task = useProvider(TaskPage.selectedTask).state;
+  Widget build(BuildContext context, ref) {
+    final task = ref.watch(TaskPage.selectedTask.state).state;
     final dayLists = task.dayLists.toList()
       ..sort((a, b) => b.date.compareTo(a.date));
 
@@ -31,7 +31,7 @@ class DayListComp extends HookWidget {
                   children: [
                     Text(
                         'Old (${dayLists.last.diff}) ${dayLists.last.diffForHuman}'),
-                    SizedBox(width: 15),
+                    const SizedBox(width: 15),
                     Text(
                         'Last (${dayLists.first.diff}) ${dayLists.first.diffForHuman}'),
                   ],
@@ -39,13 +39,15 @@ class DayListComp extends HookWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       onPressed: () async {
                         final pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime.now().add(Duration(days: -365)),
-                          lastDate: DateTime.now().add(Duration(days: 365)),
+                          firstDate:
+                              DateTime.now().add(const Duration(days: -365)),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 365)),
                         );
 
                         if (pickedDate == null) {
@@ -60,7 +62,7 @@ class DayListComp extends HookWidget {
                             element.date == DateTime.now().justDate())
                         .isEmpty)
                       TextButton(
-                        child: Text('Add To Today'),
+                        child: const Text('Add To Today'),
                         onPressed: () {
                           task.addToDayList(DateTime.now());
                         },
@@ -90,12 +92,12 @@ class DayListComp extends HookWidget {
                     child: Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.clear),
+                          icon: const Icon(Icons.clear),
                           onPressed: () => task.removeFromThisDay(dayList),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(dayList.date.toString()),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(dayList.diff.toString()),
                       ],
                     ),

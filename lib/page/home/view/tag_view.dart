@@ -7,6 +7,8 @@ import 'package:todoism/service/hive/type/task_type.dart';
 import 'package:todoism/widget/styled_box.dart';
 
 class TagView extends HookWidget {
+  const TagView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final tags = hiveW.tags.all;
@@ -68,12 +70,12 @@ class TagView extends HookWidget {
                   SizedBox(
                     width: 80,
                     child: IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: tag.delete,
                     ),
                   ),
                   Text(tag.title),
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     width: 80,
                     child: Center(child: Text(tasks.length.toString())),
@@ -83,10 +85,10 @@ class TagView extends HookWidget {
             ],
           ),
         ),
-        SizedBox(height: 1),
+        const SizedBox(height: 1),
         Row(
           children: [
-            SizedBox(width: 100),
+            const SizedBox(width: 100),
             Expanded(
               child: Column(
                 children: [

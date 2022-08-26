@@ -21,7 +21,9 @@ class Tag extends HiveObjectWrapper {
 
   @override
   Future<void> delete() {
-    taskTagRels.forEach((rel) => rel.delete());
+    for (var rel in taskTagRels) {
+      rel.delete();
+    }
 
     return super.delete();
   }
