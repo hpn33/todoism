@@ -24,10 +24,11 @@ class TaskItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0),
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: ContextMenuRegion(
         contextMenu: menuOptions(context, ref),
         child: InkWell(
+          borderRadius: BorderRadius.circular(10),
           onTap: () {
             ref.read(TaskPage.selectedTask).state = ref.read(currentTask).state;
 
@@ -36,17 +37,19 @@ class TaskItem extends HookConsumerWidget {
               builder: (context) => const TaskPage(),
             );
           },
-          child: Material(
-            elevation: 6,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: const [
-                  TitleComp(),
-                  DescriptionComp(),
-                  TagComp(),
-                ],
-              ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                TitleComp(),
+                DescriptionComp(),
+                TagComp(),
+              ],
             ),
           ),
         ),
@@ -119,7 +122,7 @@ class TitleComp extends HookConsumerWidget {
         Expanded(
           child: Text(
             task.title,
-            style: const TextStyle(fontSize: 16),
+            // style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -150,7 +153,8 @@ class DescriptionComp extends HookConsumerWidget {
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(task.description),
+              child:
+                  Text(task.description, style: const TextStyle(fontSize: 13)),
             ),
           ),
         ],

@@ -5,9 +5,12 @@ class StyledBox extends StatelessWidget {
   final Widget child;
   final bool isList;
 
-  const StyledBox(
-      {Key? key, required this.child, this.title, this.isList = false})
-      : super(key: key);
+  const StyledBox({
+    super.key,
+    required this.child,
+    this.title,
+    this.isList = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +20,18 @@ class StyledBox extends StatelessWidget {
         color: Colors.white,
       ),
       margin: const EdgeInsets.all(3.0),
-      child: Material(
-        elevation: 1,
-        child: Column(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: Material(
-                elevation: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Text(title ?? ''),
-                ),
-              ),
+      child: Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text(title ?? ''),
             ),
-            if (isList) Expanded(child: child),
-            if (!isList) child,
-          ],
-        ),
+          ),
+          if (isList) Expanded(child: child),
+          if (!isList) child,
+        ],
       ),
     );
   }

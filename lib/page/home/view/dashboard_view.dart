@@ -49,12 +49,15 @@ class DashboardView extends HookWidget {
             .where((e) => e.state == false)
             .length;
 
+        final scrollController = useState(ScrollController());
+
         return StyledBox(
           title: 'Old - Not Complete ( Count $taskCount )',
           isList: true,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
+              controller: scrollController.value,
               itemCount: dayLists.length,
               itemBuilder: (context, index) {
                 final dayList = dayLists.elementAt(index);
@@ -67,7 +70,7 @@ class DashboardView extends HookWidget {
 
                 return Column(
                   children: [
-                    header(dayList, Colors.blueGrey),
+                    header(dayList, Colors.grey.shade400),
                     Column(
                       children: [
                         for (final task in tasks)
@@ -194,12 +197,12 @@ class DashboardView extends HookWidget {
     );
   }
 
-  Padding header(DayList dayList, MaterialColor color) {
+  Padding header(DayList dayList, Color color) {
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Material(
         color: color,
-        elevation: 2,
+        borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
